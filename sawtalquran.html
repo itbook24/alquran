@@ -3,23 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Sawt Al Quran</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  body { font-family: Arial, sans-serif; background: #f9f9f9; margin: 0; padding: 0; }
-  header { background: #006400; color: white; text-align: center; padding: 15px; }
-  ul { list-style: none; padding: 0; margin: 0; }
-  li {
-    background: white; margin: 8px; padding: 10px;
-    border-radius: 8px; display: flex;
-    justify-content: space-between; align-items: center;
-  }
-  button { border: none; padding: 8px 10px; border-radius: 5px; cursor: pointer; }
-  .play-btn { background: #1e90ff; color: white; }
-  .download-btn { background: #dc143c; color: white; margin-left:5px; }
+body {
+  font-family: 'Roboto', sans-serif;
+  margin:0; padding:0;
+  background:#f0f4f8;
+}
+header {
+  background: linear-gradient(to right, #4caf50, #81c784);
+  color:white; padding:20px; text-align:center;
+  box-shadow:0 4px 6px rgba(0,0,0,0.1);
+}
+header h1{margin:0;font-size:2rem;}
+header p{margin:5px 0 0;font-weight:400;}
+main{padding:15px;max-width:900px;margin:auto;}
+ul{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px;}
+li{
+  background:white;border-radius:12px;padding:15px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  display:flex;flex-direction:column;justify-content:space-between;
+  transition:transform 0.2s, box-shadow 0.2s;
+}
+li:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.15);}
+.surah-title{font-weight:500;font-size:1.1rem;margin-bottom:10px;color:#333;}
+.button-group{display:flex;justify-content:flex-end;}
+button{border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:500;transition:all 0.2s;}
+.play-btn{background-color:#1e88e5;color:white;margin-right:8px;}
+.play-btn:hover{background-color:#1565c0;}
+.download-btn{background-color:#e53935;color:white;}
+.download-btn:hover{background-color:#b71c1c;}
+#audio-player{position:fixed;bottom:0;left:0;width:100%;outline:none;box-shadow:0 -2px 8px rgba(0,0,0,0.2);z-index:1000;}
 </style>
-
 </head>
 <body>
 
@@ -32,125 +48,125 @@
   <ul id="surah-list"></ul>
 </main>
 
-<audio id="audio-player" controls style="width: 100%; margin-top:10px;"></audio>
+<audio id="audio-player" controls></audio>
 
 <script>
-// 114 Surah Recitation – Mishary Rashid Al‑Afasy
+// Full 114 Surah list with direct MP3
 const surahs = [
-  {number:1, arabic:"الفاتحة", english:"Al‑Fatiha"},
-  {number:2, arabic:"البقرة", english:"Al‑Baqarah"},
-  {number:3, arabic:"آل عمران", english:"Al‑Imran"},
-  {number:4, arabic:"النساء", english:"An‑Nisa"},
-  {number:5, arabic:"المائدة", english:"Al‑Ma'idah"},
-  {number:6, arabic:"الأنعام", english:"Al‑An'am"},
-  {number:7, arabic:"الأعراف", english:"Al‑A'raf"},
-  {number:8, arabic:"الأنفال", english:"Al‑Anfal"},
-  {number:9, arabic:"التوبة", english:"At‑Tawbah"},
-  {number:10, arabic:"يونس", english:"Yunus"},
-  {number:11, arabic:"هود", english:"Hud"},
-  {number:12, arabic:"يوسف", english:"Yusuf"},
-  {number:13, arabic:"الرعد", english:"Ar‑Ra'd"},
-  {number:14, arabic:"إبراهيم", english:"Ibrahim"},
-  {number:15, arabic:"الحجر", english:"Al‑Hijr"},
-  {number:16, arabic:"النحل", english:"An‑Nahl"},
-  {number:17, arabic:"الإسراء", english:"Al‑Isra"},
-  {number:18, arabic:"الكهف", english:"Al‑Kahf"},
-  {number:19, arabic:"مريم", english:"Maryam"},
-  {number:20, arabic:"طه", english:"Ta‑Ha"},
-  {number:21, arabic:"الأنبياء", english:"Al‑Anbiya"},
-  {number:22, arabic:"الحج", english:"Al‑Hajj"},
-  {number:23, arabic:"المؤمنون", english:"Al‑Mu’minun"},
-  {number:24, arabic:"النور", english:"An‑Nur"},
-  {number:25, arabic:"الفرقان", english:"Al‑Furqan"},
-  {number:26, arabic:"الشعراء", english:"Ash‑Shu’ara"},
-  {number:27, arabic:"النمل", english:"An‑Naml"},
-  {number:28, arabic:"القصص", english:"Al‑Qasas"},
-  {number:29, arabic:"العنكبوت", english:"Al‑Ankabut"},
-  {number:30, arabic:"الروم", english:"Ar‑Rum"},
-  {number:31, arabic:"لقمان", english:"Luqman"},
-  {number:32, arabic:"السجدة", english:"As‑Sajdah"},
-  {number:33, arabic:"الأحزاب", english:"Al‑Ahzab"},
-  {number:34, arabic:"سبأ", english:"Saba"},
-  {number:35, arabic:"فاطر", english:"Fatir"},
-  {number:36, arabic:"يس", english:"Ya‑Sin"},
-  {number:37, arabic:"الصافات", english:"As‑Saffat"},
-  {number:38, arabic:"ص", english:"Sad"},
-  {number:39, arabic:"الزمر", english:"Az‑Zumar"},
-  {number:40, arabic:"غافر", english:"Ghafir"},
-  {number:41, arabic:"فصلت", english:"Fussilat"},
-  {number:42, arabic:"الشورى", english:"Ash‑Shura"},
-  {number:43, arabic:"الزخرف", english:"Az‑Zukhruf"},
-  {number:44, arabic:"الدخان", english:"Ad‑Dukhan"},
-  {number:45, arabic:"الجاثية", english:"Al‑Jathiyah"},
-  {number:46, arabic:"الأحقاف", english:"Al‑Ahqaf"},
-  {number:47, arabic:"محمد", english:"Muhammad"},
-  {number:48, arabic:"الفتح", english:"Al‑Fath"},
-  {number:49, arabic:"الحجرات", english:"Al‑Hujurat"},
-  {number:50, arabic:"ق", english:"Qaf"},
-  {number:51, arabic:"الذاريات", english:"Ad‑Dhariyat"},
-  {number:52, arabic:"الطور", english:"At‑Tur"},
-  {number:53, arabic:"النجم", english:"An‑Najm"},
-  {number:54, arabic:"القمر", english:"Al‑Qamar"},
-  {number:55, arabic:"الرحمن", english:"Ar‑Rahman"},
-  {number:56, arabic:"الواقعة", english:"Al‑Waqi’ah"},
-  {number:57, arabic:"الحديد", english:"Al‑Hadid"},
-  {number:58, arabic:"المجادلة", english:"Al‑Mujadilah"},
-  {number:59, arabic:"الحشر", english:"Al‑Hashr"},
-  {number:60, arabic:"الممتحنة", english:"Al‑Mumtahanah"},
-  {number:61, arabic:"الصف", english:"As‑Saff"},
-  {number:62, arabic:"الجمعة", english:"Al‑Jum’ah"},
-  {number:63, arabic:"المنافقون", english:"Al‑Munafiqون"},
-  {number:64, arabic:"التغابن", english:"At‑Taghabun"},
-  {number:65, arabic:"الطلاق", english:"At‑Talaq"},
-  {number:66, arabic:"التحريم", english:"At‑Tahrim"},
-  {number:67, arabic:"الملك", english:"Al‑Mulk"},
-  {number:68, arabic:"القلم", english:"Al‑Qalam"},
-  {number:69, arabic:"الحاقة", english:"Al‑Haqqah"},
-  {number:70, arabic:"المعارج", english:"Al‑Ma’arij"},
-  {number:71, arabic:"نوح", english:"Nuh"},
-  {number:72, arabic:"الجن", english:"Al‑Jinn"},
-  {number:73, arabic:"المزمل", english:"Al‑Muzzammil"},
-  {number:74, arabic:"المدثر", english:"Al‑Muddathir"},
-  {number:75, arabic:"القيامة", english:"Al‑Qiyamah"},
-  {number:76, arabic:"الإنسان", english:"Al‑Insan"},
-  {number:77, arabic:"المرسلات", english:"Al‑Mursalat"},
-  {number:78, arabic:"النبأ", english:"An‑Naba"},
-  {number:79, arabic:"النازعات", english:"An‑Nazi’at"},
-  {number:80, arabic:"عبس", english:"Abasa"},
-  {number:81, arabic:"التكوير", english:"At‑Takwir"},
-  {number:82, arabic:"الإنفطار", english:"Al‑Infitar"},
-  {number:83, arabic:"المطففين", english:"Al‑Mutaffifin"},
-  {number:84, arabic:"الإنشقاق", english:"Al‑Inshiqaq"},
-  {number:85, arabic:"البروج", english:"Al‑Buruj"},
-  {number:86, arabic:"الطارق", english:"At‑Tariq"},
-  {number:87, arabic:"الأعلى", english:"Al‑A’la"},
-  {number:88, arabic:"الغاشية", english:"Al‑Ghashiyah"},
-  {number:89, arabic:"الفجر", english:"Al‑Fajr"},
-  {number:90, arabic:"البلد", english:"Al‑Balad"},
-  {number:91, arabic:"الشمس", english:"Ash‑Shams"},
-  {number:92, arabic:"الليل", english:"Al‑Lail"},
-  {number:93, arabic:"الضحى", english:"Ad‑Duha"},
-  {number:94, arabic:"الشرح", english:"Ash‑Sharh"},
-  {number:95, arabic:"التين", english:"At‑Tin"},
-  {number:96, arabic:"العلق", english:"Al‑Alaq"},
-  {number:97, arabic:"القدر", english:"Al‑Qadr"},
-  {number:98, arabic:"البينة", english:"Al‑Bayyinah"},
-  {number:99, arabic:"الزلزلة", english:"Az‑Zalzalah"},
-  {number:100, arabic:"العاديات", english:"Al‑Adiyat"},
-  {number:101, arabic:"القارعة", english:"Al‑Qari’ah"},
-  {number:102, arabic:"التكاثر", english:"At‑Takathur"},
-  {number:103, arabic:"العصر", english:"Al‑Asr"},
-  {number:104, arabic:"الهمزة", english:"Al‑Humazah"},
-  {number:105, arabic:"الفيل", english:"Al‑Fil"},
-  {number:106, arabic:"قريش", english:"Quraish"},
-  {number:107, arabic:"الماعون", english:"Al‑Ma’un"},
-  {number:108, arabic:"الكوثر", english:"Al‑Kauthar"},
-  {number:109, arabic:"الكافرون", english:"Al‑Kafirun"},
-  {number:110, arabic:"النصر", english:"An‑Nasr"},
-  {number:111, arabic:"المسد", english:"Al‑Masad"},
-  {number:112, arabic:"الإخلاص", english:"Al‑Ikhlas"},
-  {number:113, arabic:"الفلق", english:"Al‑Falaq"},
-  {number:114, arabic:"الناس", english:"An‑Nas"}
+{number:1,arabic:"الفاتحة",english:"Al-Fatiha"},
+{number:2,arabic:"البقرة",english:"Al-Baqarah"},
+{number:3,arabic:"آل عمران",english:"Al-Imran"},
+{number:4,arabic:"النساء",english:"An-Nisa"},
+{number:5,arabic:"المائدة",english:"Al-Ma'idah"},
+{number:6,arabic:"الأنعام",english:"Al-An'am"},
+{number:7,arabic:"الأعراف",english:"Al-A'raf"},
+{number:8,arabic:"الأنفال",english:"Al-Anfal"},
+{number:9,arabic:"التوبة",english:"At-Tawbah"},
+{number:10,arabic:"يونس",english:"Yunus"},
+{number:11,arabic:"هود",english:"Hud"},
+{number:12,arabic:"يوسف",english:"Yusuf"},
+{number:13,arabic:"الرعد",english:"Ar-Ra'd"},
+{number:14,arabic:"إبراهيم",english:"Ibrahim"},
+{number:15,arabic:"الحجر",english:"Al-Hijr"},
+{number:16,arabic:"النحل",english:"An-Nahl"},
+{number:17,arabic:"الإسراء",english:"Al-Isra"},
+{number:18,arabic:"الكهف",english:"Al-Kahf"},
+{number:19,arabic:"مريم",english:"Maryam"},
+{number:20,arabic:"طه",english:"Ta-Ha"},
+{number:21,arabic:"الأنبياء",english:"Al-Anbiya"},
+{number:22,arabic:"الحج",english:"Al-Hajj"},
+{number:23,arabic:"المؤمنون",english:"Al-Mu'minun"},
+{number:24,arabic:"النور",english:"An-Nur"},
+{number:25,arabic:"الفرقان",english:"Al-Furqan"},
+{number:26,arabic:"الشعراء",english:"Ash-Shu'ara"},
+{number:27,arabic:"النمل",english:"An-Naml"},
+{number:28,arabic:"القصص",english:"Al-Qasas"},
+{number:29,arabic:"العنكبوت",english:"Al-Ankabut"},
+{number:30,arabic:"الروم",english:"Ar-Rum"},
+{number:31,arabic:"لقمان",english:"Luqman"},
+{number:32,arabic:"السجدة",english:"As-Sajdah"},
+{number:33,arabic:"الأحزاب",english:"Al-Ahzab"},
+{number:34,arabic:"سبأ",english:"Saba"},
+{number:35,arabic:"فاطر",english:"Fatir"},
+{number:36,arabic:"يس",english:"Ya-Sin"},
+{number:37,arabic:"الصافات",english:"As-Saffat"},
+{number:38,arabic:"ص",english:"Sad"},
+{number:39,arabic:"الزمر",english:"Az-Zumar"},
+{number:40,arabic:"غافر",english:"Ghafir"},
+{number:41,arabic:"فصلت",english:"Fussilat"},
+{number:42,arabic:"الشورى",english:"Ash-Shura"},
+{number:43,arabic:"الزخرف",english:"Az-Zukhruf"},
+{number:44,arabic:"الدخان",english:"Ad-Dukhan"},
+{number:45,arabic:"الجاثية",english:"Al-Jathiyah"},
+{number:46,arabic:"الأحقاف",english:"Al-Ahqaf"},
+{number:47,arabic:"محمد",english:"Muhammad"},
+{number:48,arabic:"الفتح",english:"Al-Fath"},
+{number:49,arabic:"الحجرات",english:"Al-Hujurat"},
+{number:50,arabic:"ق",english:"Qaf"},
+{number:51,arabic:"الذاريات",english:"Adh-Dhariyat"},
+{number:52,arabic:"الطور",english:"At-Tur"},
+{number:53,arabic:"النجم",english:"An-Najm"},
+{number:54,arabic:"القمر",english:"Al-Qamar"},
+{number:55,arabic:"الرحمن",english:"Ar-Rahman"},
+{number:56,arabic:"الواقعة",english:"Al-Waqi'ah"},
+{number:57,arabic:"الحديد",english:"Al-Hadid"},
+{number:58,arabic:"المجادلة",english:"Al-Mujadila"},
+{number:59,arabic:"الحشر",english:"Al-Hashr"},
+{number:60,arabic:"الممتحنة",english:"Al-Mumtahina"},
+{number:61,arabic:"الصف",english:"As-Saff"},
+{number:62,arabic:"الجمعة",english:"Al-Jumu'ah"},
+{number:63,arabic:"المنافقون",english:"Al-Munafiqun"},
+{number:64,arabic:"التغابن",english:"At-Taghabun"},
+{number:65,arabic:"الطلاق",english:"At-Talaq"},
+{number:66,arabic:"التحريم",english:"At-Tahrim"},
+{number:67,arabic:"الملك",english:"Al-Mulk"},
+{number:68,arabic:"القلم",english:"Al-Qalam"},
+{number:69,arabic:"الحاقة",english:"Al-Haqqah"},
+{number:70,arabic:"المعارج",english:"Al-Ma'arij"},
+{number:71,arabic:"نوح",english:"Nuh"},
+{number:72,arabic:"الجن",english:"Al-Jinn"},
+{number:73,arabic:"المزمل",english:"Al-Muzzammil"},
+{number:74,arabic:"المدثر",english:"Al-Muddathir"},
+{number:75,arabic:"القيامة",english:"Al-Qiyamah"},
+{number:76,arabic:"الإنسان",english:"Al-Insan"},
+{number:77,arabic:"المرسلات",english:"Al-Mursalat"},
+{number:78,arabic:"النبأ",english:"An-Naba"},
+{number:79,arabic:"النازعات",english:"An-Nazi'at"},
+{number:80,arabic:"عبس",english:"Abasa"},
+{number:81,arabic:"التكوير",english:"At-Takwir"},
+{number:82,arabic:"الإنفطار",english:"Al-Infitar"},
+{number:83,arabic:"المطففين",english:"Al-Mutaffifin"},
+{number:84,arabic:"الإنشقاق",english:"Al-Inshiqaq"},
+{number:85,arabic:"البروج",english:"Al-Buruj"},
+{number:86,arabic:"الطارق",english:"At-Tariq"},
+{number:87,arabic:"الأعلى",english:"Al-A'la"},
+{number:88,arabic:"الغاشية",english:"Al-Ghashiyah"},
+{number:89,arabic:"الفجر",english:"Al-Fajr"},
+{number:90,arabic:"البلد",english:"Al-Balad"},
+{number:91,arabic:"الشمس",english:"Ash-Shams"},
+{number:92,arabic:"الليل",english:"Al-Lail"},
+{number:93,arabic:"الضحى",english:"Ad-Duhaa"},
+{number:94,arabic:"الشرح",english:"Ash-Sharh"},
+{number:95,arabic:"التين",english:"At-Tin"},
+{number:96,arabic:"العلق",english:"Al-Alaq"},
+{number:97,arabic:"القدر",english:"Al-Qadr"},
+{number:98,arabic:"البينة",english:"Al-Bayyinah"},
+{number:99,arabic:"الزلزلة",english:"Az-Zalzalah"},
+{number:100,arabic:"العاديات",english:"Al-Adiyat"},
+{number:101,arabic:"القارعة",english:"Al-Qari'ah"},
+{number:102,arabic:"التكاثر",english:"At-Takathur"},
+{number:103,arabic:"العصر",english:"Al-Asr"},
+{number:104,arabic:"الهمزة",english:"Al-Humazah"},
+{number:105,arabic:"الفيل",english:"Al-Fil"},
+{number:106,arabic:"قريش",english:"Quraish"},
+{number:107,arabic:"الماعون",english:"Al-Ma'un"},
+{number:108,arabic:"الكوثر",english:"Al-Kauthar"},
+{number:109,arabic:"الكافرون",english:"Al-Kafirun"},
+{number:110,arabic:"النصر",english:"An-Nasr"},
+{number:111,arabic:"المسد",english:"Al-Masad"},
+{number:112,arabic:"الإخلاص",english:"Al-Ikhlas"},
+{number:113,arabic:"الفلق",english:"Al-Falaq"},
+{number:114,arabic:"الناس",english:"An-Nas"}
 ];
 
 const listEl = document.getElementById('surah-list');
@@ -159,12 +175,10 @@ surahs.forEach(surah => {
   const li = document.createElement('li');
   const audioUrl = `http://server8.mp3quran.net/afs/${String(surah.number).padStart(3,'0')}.mp3`;
   li.innerHTML = `
-    <span>${surah.number}. ${surah.arabic} (${surah.english})</span>
-    <div>
+    <div class="surah-title">${surah.number}. ${surah.arabic} (${surah.english})</div>
+    <div class="button-group">
       <button class="play-btn">Play</button>
-      <a href="${audioUrl}" target="_blank">
-        <button class="download-btn">Download</button>
-      </a>
+      <a href="${audioUrl}" target="_blank"><button class="download-btn">Download</button></a>
     </div>
   `;
   li.querySelector('.play-btn').addEventListener('click', () => {
