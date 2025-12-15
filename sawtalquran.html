@@ -5,36 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sawt Al Quran</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
-body {
-  font-family: 'Roboto', sans-serif;
-  margin:0; padding:0;
-  background:#f0f4f8;
-}
-header {
-  background: linear-gradient(to right, #4caf50, #81c784);
-  color:white; padding:20px; text-align:center;
-  box-shadow:0 4px 6px rgba(0,0,0,0.1);
-}
-header h1{margin:0;font-size:2rem;}
-header p{margin:5px 0 0;font-weight:400;}
+body { font-family:'Roboto',sans-serif;margin:0;padding:0;background:#f0f4f8; }
+header { background: linear-gradient(to right,#4caf50,#81c784); color:white; padding:20px; text-align:center; box-shadow:0 4px 6px rgba(0,0,0,0.1); }
+header h1{margin:0;font-size:2rem;} header p{margin:5px 0 0;font-weight:400;}
 main{padding:15px;max-width:900px;margin:auto;}
 ul{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px;}
-li{
-  background:white;border-radius:12px;padding:15px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  display:flex;flex-direction:column;justify-content:space-between;
-  transition:transform 0.2s, box-shadow 0.2s;
-}
-li:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.15);}
+li{background:white;border-radius:12px;padding:15px;box-shadow:0 4px 12px rgba(0,0,0,0.08);display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.3s, box-shadow 0.3s;}
+li:hover{transform: translateY(-5px) scale(1.02); box-shadow:0 10px 25px rgba(0,0,0,0.15);}
 .surah-title{font-weight:500;font-size:1.1rem;margin-bottom:10px;color:#333;}
-.button-group{display:flex;justify-content:flex-end;}
-button{border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:500;transition:all 0.2s;}
-.play-btn{background-color:#1e88e5;color:white;margin-right:8px;}
-.play-btn:hover{background-color:#1565c0;}
-.download-btn{background-color:#e53935;color:white;}
-.download-btn:hover{background-color:#b71c1c;}
-#audio-player{position:fixed;bottom:0;left:0;width:100%;outline:none;box-shadow:0 -2px 8px rgba(0,0,0,0.2);z-index:1000;}
+.button-group{display:flex;justify-content:flex-end;gap:10px;}
+button.icon-btn{border:none;padding:8px 10px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+button.play-btn{background:#1e88e5;color:white;} button.play-btn:hover{background:#1565c0;}
+button.download-btn{background:#e53935;color:white;} button.download-btn:hover{background:#b71c1c;}
+.player-container{position:fixed;bottom:0;left:0;width:100%;background:white;box-shadow:0 -2px 8px rgba(0,0,0,0.2);padding:10px;display:flex;align-items:center;justify-content:center;gap:20px;z-index:1000;}
+.player-container button{border:none;background:none;font-size:20px;color:#333;cursor:pointer;}
+audio#audio-player{flex:1;outline:none;width:50%;}
 </style>
 </head>
 <body>
@@ -48,10 +36,14 @@ button{border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight
   <ul id="surah-list"></ul>
 </main>
 
-<audio id="audio-player" controls></audio>
+<div class="player-container">
+  <button id="prev"><i class="fas fa-backward"></i></button>
+  <audio id="audio-player" controls></audio>
+  <button id="next"><i class="fas fa-forward"></i></button>
+</div>
 
 <script>
-// Full 114 Surah list with direct MP3
+// Full 114 Surah
 const surahs = [
 {number:1,arabic:"الفاتحة",english:"Al-Fatiha"},
 {number:2,arabic:"البقرة",english:"Al-Baqarah"},
@@ -170,22 +162,39 @@ const surahs = [
 ];
 
 const listEl = document.getElementById('surah-list');
+let currentIndex = 0;
 
-surahs.forEach(surah => {
-  const li = document.createElement('li');
+const audioPlayer = document.getElementById('audio-player');
+
+surahs.forEach((surah,index)=>{
+  const li=document.createElement('li');
   const audioUrl = `http://server8.mp3quran.net/afs/${String(surah.number).padStart(3,'0')}.mp3`;
-  li.innerHTML = `
+  li.innerHTML=`
     <div class="surah-title">${surah.number}. ${surah.arabic} (${surah.english})</div>
     <div class="button-group">
-      <button class="play-btn">Play</button>
-      <a href="${audioUrl}" target="_blank"><button class="download-btn">Download</button></a>
+      <button class="icon-btn play-btn"><i class="fas fa-play"></i></button>
+      <a href="${audioUrl}" target="_blank"><button class="icon-btn download-btn"><i class="fas fa-download"></i></button></a>
     </div>
   `;
-  li.querySelector('.play-btn').addEventListener('click', () => {
-    document.getElementById('audio-player').src = audioUrl;
-    document.getElementById('audio-player').play();
+  li.querySelector('.play-btn').addEventListener('click',()=>{
+    audioPlayer.src = audioUrl;
+    audioPlayer.play();
+    currentIndex = index;
   });
   listEl.appendChild(li);
+});
+
+// Next / Previous
+document.getElementById('next').addEventListener('click',()=>{
+  currentIndex=(currentIndex+1)%surahs.length;
+  audioPlayer.src=`http://server8.mp3quran.net/afs/${String(surahs[currentIndex].number).padStart(3,'0')}.mp3`;
+  audioPlayer.play();
+});
+
+document.getElementById('prev').addEventListener('click',()=>{
+  currentIndex=(currentIndex-1+surahs.length)%surahs.length;
+  audioPlayer.src=`http://server8.mp3quran.net/afs/${String(surahs[currentIndex].number).padStart(3,'0')}.mp3`;
+  audioPlayer.play();
 });
 </script>
 
