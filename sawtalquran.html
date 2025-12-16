@@ -20,25 +20,57 @@
         .header {
             background: linear-gradient(135deg, #00897b 0%, #00695c 100%);
             color: white;
-            padding: 30px 20px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header-title {
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
 
         .header h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
+            font-size: 24px;
+            margin-bottom: 5px;
         }
 
         .header h2 {
-            font-size: 20px;
-            margin-bottom: 10px;
+            font-size: 16px;
             font-weight: normal;
+            opacity: 0.9;
         }
 
-        .header p {
-            font-size: 14px;
-            opacity: 0.9;
+        .header-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .header-controls select,
+        .header-controls input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255,255,255,0.95);
+        }
+
+        .header-controls select:focus,
+        .header-controls input:focus {
+            border-color: white;
+        }
+
+        @media (max-width: 768px) {
+            .header-controls {
+                grid-template-columns: 1fr;
+            }
         }
 
         .container {
@@ -48,55 +80,11 @@
         }
 
         .qari-selector {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .qari-selector label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: #00695c;
-            font-size: 16px;
-        }
-
-        .qari-selector select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #00897b;
-            border-radius: 8px;
-            font-size: 16px;
-            outline: none;
-            cursor: pointer;
-            background: white;
-        }
-
-        .qari-selector select:focus {
-            border-color: #00695c;
+            display: none;
         }
 
         .search-box {
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #00897b;
-            border-radius: 8px;
-            font-size: 16px;
-            outline: none;
-        }
-
-        .search-box input:focus {
-            border-color: #00695c;
+            display: none;
         }
 
         .player {
@@ -342,14 +330,13 @@
 </head>
 <body>
     <div class="header">
-        <h1>صوت القرآن</h1>
-        <h2>Sawt Al Quran</h2>
-        <p>Complete Quran Audio Collection | 114 Surahs</p>
+        <h1>صوت القرآن - Sawt Al Quran</h1>
+        <h2>Complete Quran Audio Collection</h2>
     </div>
 
     <div class="container">
         <div class="qari-selector">
-            <label for="qariSelect">Select Qari (কারী নির্বাচন করুন):</label>
+            <label for="qariSelect">Select Qari:</label>
             <select id="qariSelect">
                 <option value="frs_a">Fares Abbad (فارس عباد)</option>
                 <option value="abdulbasit_murattal">Abdul Basit (عبد الباسط عبد الصمد)</option>
