@@ -79,14 +79,6 @@
             padding: 20px;
         }
 
-        .qari-selector {
-            display: none;
-        }
-
-        .search-box {
-            display: none;
-        }
-
         .player {
             background: white;
             padding: 25px;
@@ -330,30 +322,29 @@
 </head>
 <body>
     <div class="header">
-        <h1>صوت القرآن - Sawt Al Quran</h1>
-        <h2>Complete Quran Audio Collection</h2>
+        <div class="header-content">
+            <div class="header-title">
+                <h1>صوت القرآن - Sawt Al Quran</h1>
+                <h2>Complete Quran Audio Collection</h2>
+            </div>
+            <div class="header-controls">
+                <select id="qariSelect">
+                    <option value="frs_a">Fares Abbad (فارس عباد)</option>
+                    <option value="abdulbasit_murattal">Abdul Basit (عبد الباسط عبد الصمد)</option>
+                    <option value="mishari_alafasy">Mishary Rashid Alafasy (مشاري بن راشد العفاسي)</option>
+                    <option value="mahmoud_ali_albanna">Mahmoud Ali Al-Banna (محمود علي البنا)</option>
+                    <option value="sds">Saad Al-Ghamdi (سعد الغامدي)</option>
+                    <option value="ahmed_ibn_ali_ajamy">Ahmed ibn Ali al-Ajamy (أحمد بن علي العجمي)</option>
+                    <option value="husary">Mahmoud Khalil Al-Hussary (محمود خليل الحصري)</option>
+                    <option value="sudais">Abdur-Rahman as-Sudais (عبد الرحمن السديس)</option>
+                    <option value="maher_almuaiqly">Maher Al Muaiqly (ماهر المعيقلي)</option>
+                </select>
+                <input type="text" id="searchInput" placeholder="Search Surah by name or number...">
+            </div>
+        </div>
     </div>
 
     <div class="container">
-        <div class="qari-selector">
-            <label for="qariSelect">Select Qari:</label>
-            <select id="qariSelect">
-                <option value="frs_a">Fares Abbad (فارس عباد)</option>
-                <option value="abdulbasit_murattal">Abdul Basit (عبد الباسط عبد الصمد)</option>
-                <option value="mishari_alafasy">Mishary Rashid Alafasy (مشاري بن راشد العفاسي)</option>
-                <option value="mahmoud_ali_albanna">Mahmoud Ali Al-Banna (محمود علي البنا)</option>
-                <option value="sds">Saad Al-Ghamdi (سعد الغامدي)</option>
-                <option value="ahmed_ibn_ali_ajamy">Ahmed ibn Ali al-Ajamy (أحمد بن علي العجمي)</option>
-                <option value="husary">Mahmoud Khalil Al-Hussary (محمود خليل الحصري)</option>
-                <option value="sudais">Abdur-Rahman as-Sudais (عبد الرحمن السديس)</option>
-                <option value="maher_almuaiqly">Maher Al Muaiqly (ماهر المعيقلي)</option>
-            </select>
-        </div>
-
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search Surah by name or number...">
-        </div>
-
         <div class="player" id="player">
             <div class="player-info">
                 <h3 id="currentSurahArabic"></h3>
