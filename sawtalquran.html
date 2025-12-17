@@ -318,34 +318,6 @@
             width: 20px;
             height: 20px;
         }
-
-        .scroll-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: #00897b;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 1000;
-            transition: all 0.3s;
-        }
-
-        .scroll-to-top:hover {
-            background: #00695c;
-            transform: scale(1.1);
-        }
-
-        .scroll-to-top.show {
-            display: flex;
-        }
     </style>
 </head>
 <body>
@@ -353,20 +325,16 @@
         <div class="header-content">
             <div class="header-title">
                 <h1>صوت القرآن - Sawt Al Quran</h1>
-                <h2>Complete Quran Audio Collection</h2>
+                <h2>Best Quran Audio</h2>
             </div>
             <div class="header-controls">
                 <select id="qariSelect">
-                    <option value="frs_a">Fares Abbad (فارس عباد)</option>
+                    <option value="ahmed_ibn_ali_ajamy">Ahmed ibn Ali al-Ajamy (أحمد بن علي العجمي)</option>
                     <option value="abdulbasit_murattal">Abdul Basit (عبد الباسط عبد الصمد)</option>
                     <option value="mishari_alafasy">Mishary Rashid Alafasy (مشاري بن راشد العفاسي)</option>
+                    <option value="mahmoud_ali_albanna">Mahmoud Ali Al-Banna (محمود علي البنا)</option>
                     <option value="sds">Saad Al-Ghamdi (سعد الغامدي)</option>
-                    <option value="ahmed_ibn_ali_ajamy">Ahmed ibn Ali al-Ajamy (أحمد بن علي العجمي)</option>
                     <option value="husary">Mahmoud Khalil Al-Hussary (محمود خليل الحصري)</option>
-                    <option value="sudais">Abdur-Rahman as-Sudais (عبد الرحمن السديس)</option>
-                    <option value="maher_almuaiqly">Maher Al Muaiqly (ماهر المعيقلي)</option>
-                    <option value="muhammad_ayyub">Muhammad Ayyub (محمد أيوب)</option>
-                    <option value="yasser_ad-dussary">Yasser Al-Dosari (ياسر الدوسري)</option>
                 </select>
                 <input type="text" id="searchInput" placeholder="Search Surah by name or number...">
             </div>
@@ -421,15 +389,9 @@
     </div>
 
     <div class="footer">
-        <p>Sawt Al Quran - Complete Quran Audio Collection</p>
-        <p style="font-size: 12px; opacity: 0.9;">Made with Love for the Ummah</p>
+        <p>Sawt Al Quran - صوت القرآن - Best Quran Audio online</p>
+        <p style="font-size: 12px; opacity: 0.9;">Made with Love for the Ummah محمد كوثر</p>
     </div>
-
-    <button class="scroll-to-top" id="scrollToTop">
-        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 24px; height: 24px;">
-            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
-        </svg>
-    </button>
 
     <audio id="audioPlayer"></audio>
 
@@ -552,21 +514,17 @@
         ];
 
         var qaris = {
-            'frs_a': { name: 'Fares Abbad', server: 'server8', folder: 'frs_a' },
-            'abdulbasit_murattal': { name: 'Abdul Basit', server: 'server7', folder: 'basit' },
-            'mishari_alafasy': { name: 'Mishary Alafasy', server: 'server8', folder: 'afs' },
-            'sds': { name: 'Saad Al-Ghamdi', server: 'server7', folder: 's_gmd' },
-            'ahmed_ibn_ali_ajamy': { name: 'Ahmed Al-Ajamy', server: 'server10', folder: 'ajm' },
-            'husary': { name: 'Al-Hussary', server: 'server8', folder: 'husary' },
-            'sudais': { name: 'Abdur-Rahman as-Sudais', server: 'server11', folder: 'sds' },
-            'maher_almuaiqly': { name: 'Maher Al Muaiqly', server: 'server12', folder: 'maher' },
-            'muhammad_ayyub': { name: 'Muhammad Ayyub', server: 'server11', folder: 'muhammad_ayyub' },
-            'yasser_ad-dussary': { name: 'Yasser Al-Dosari', server: 'server14', folder: 'yasser_ad-dussary' }
+            'ahmed_ibn_ali_ajamy': { name: 'Ahmed Al-Ajamy', server: 'server11', folder: 'ahmad_ajamy' },
+            'abdulbasit_murattal': { name: 'Abdul Basit', server: 'server8', folder: 'basit' },
+            'mishari_alafasy': { name: 'Mishary Alafasy', server: 'server8', folder: 'alafasy' },
+            'mahmoud_ali_albanna': { name: 'Mahmoud Ali Al-Banna', server: 'server6', folder: 'banna' },
+            'sds': { name: 'Saad Al-Ghamdi', server: 'server8', folder: 'saood' },
+            'husary': { name: 'Al-Hussary', server: 'server8', folder: 'husary' }
         };
 
         var currentSurah = null;
         var isPlaying = false;
-        var currentQari = 'frs_a';
+        var currentQari = 'ahmed_ibn_ali_ajamy';
         var audio = document.getElementById('audioPlayer');
         var player = document.getElementById('player');
         var playBtn = document.getElementById('playBtn');
@@ -580,22 +538,6 @@
         var prevBtn = document.getElementById('prevBtn');
         var nextBtn = document.getElementById('nextBtn');
         var qariSelect = document.getElementById('qariSelect');
-        var scrollToTopBtn = document.getElementById('scrollToTop');
-
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 300) {
-                scrollToTopBtn.classList.add('show');
-            } else {
-                scrollToTopBtn.classList.remove('show');
-            }
-        });
-
-        scrollToTopBtn.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
 
         function getAudioUrl(surahNumber) {
             var paddedNumber = String(surahNumber).padStart(3, '0');
