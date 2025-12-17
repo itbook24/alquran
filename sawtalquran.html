@@ -318,6 +318,34 @@
             width: 20px;
             height: 20px;
         }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #00897b;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .scroll-to-top:hover {
+            background: #00695c;
+            transform: scale(1.1);
+        }
+
+        .scroll-to-top.show {
+            display: flex;
+        }
     </style>
 </head>
 <body>
@@ -396,6 +424,12 @@
         <p>Sawt Al Quran - Complete Quran Audio Collection</p>
         <p style="font-size: 12px; opacity: 0.9;">Made with Love for the Ummah</p>
     </div>
+
+    <button class="scroll-to-top" id="scrollToTop">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 24px; height: 24px;">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+    </button>
 
     <audio id="audioPlayer"></audio>
 
@@ -546,6 +580,22 @@
         var prevBtn = document.getElementById('prevBtn');
         var nextBtn = document.getElementById('nextBtn');
         var qariSelect = document.getElementById('qariSelect');
+        var scrollToTopBtn = document.getElementById('scrollToTop');
+
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        });
+
+        scrollToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
 
         function getAudioUrl(surahNumber) {
             var paddedNumber = String(surahNumber).padStart(3, '0');
