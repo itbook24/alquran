@@ -329,12 +329,15 @@
             </div>
             <div class="header-controls">
                 <select id="qariSelect">
-                    <option value="ahmed_ibn_ali_ajamy">Ahmed ibn Ali al-Ajamy (أحمد بن علي العجمي)</option>
+                    <option value="frs_a">Fares Abbad (فارس عباد)</option>
                     <option value="abdulbasit_murattal">Abdul Basit (عبد الباسط عبد الصمد)</option>
                     <option value="mishari_alafasy">Mishary Rashid Alafasy (مشاري بن راشد العفاسي)</option>
                     <option value="mahmoud_ali_albanna">Mahmoud Ali Al-Banna (محمود علي البنا)</option>
                     <option value="sds">Saad Al-Ghamdi (سعد الغامدي)</option>
+                    <option value="ahmed_ibn_ali_ajamy">Ahmed ibn Ali al-Ajamy (أحمد بن علي العجمي)</option>
                     <option value="husary">Mahmoud Khalil Al-Hussary (محمود خليل الحصري)</option>
+                    <option value="sudais">Abdur-Rahman as-Sudais (عبد الرحمن السديس)</option>
+                    <option value="maher_almuaiqly">Maher Al Muaiqly (ماهر المعيقلي)</option>
                 </select>
                 <input type="text" id="searchInput" placeholder="Search Surah by name or number...">
             </div>
@@ -389,8 +392,8 @@
     </div>
 
     <div class="footer">
-        <p>Sawt Al Quran - صوت القرآن - Best Quran Audio online</p>
-        <p style="font-size: 12px; opacity: 0.9;">Made with Love for the Ummah محمد كوثر</p>
+        <p><Sawt Al Quran - صوت القرآن - Best Quran Audio online</p>
+        <p style="font-size: 12px; opacity: 0.9;">Made with Love for the Ummah محمد كوثر </p>
     </div>
 
     <audio id="audioPlayer"></audio>
@@ -514,17 +517,20 @@
         ];
 
         var qaris = {
-            'ahmed_ibn_ali_ajamy': { name: 'Ahmed Al-Ajamy', server: 'server11', folder: 'ahmad_ajamy' },
+            'frs_a': { name: 'Fares Abbad', server: 'server8', folder: 'frs_a' },
             'abdulbasit_murattal': { name: 'Abdul Basit', server: 'server8', folder: 'basit' },
             'mishari_alafasy': { name: 'Mishary Alafasy', server: 'server8', folder: 'alafasy' },
             'mahmoud_ali_albanna': { name: 'Mahmoud Ali Al-Banna', server: 'server6', folder: 'banna' },
             'sds': { name: 'Saad Al-Ghamdi', server: 'server8', folder: 'saood' },
-            'husary': { name: 'Al-Hussary', server: 'server8', folder: 'husary' }
+            'ahmed_ibn_ali_ajamy': { name: 'Ahmed Al-Ajamy', server: 'server11', folder: 'ahmad_ajamy' },
+            'husary': { name: 'Al-Hussary', server: 'server8', folder: 'husary' },
+            'sudais': { name: 'Abdur-Rahman as-Sudais', server: 'server11', folder: 'sds' },
+            'maher_almuaiqly': { name: 'Maher Al Muaiqly', server: 'server12', folder: 'maher' }
         };
 
         var currentSurah = null;
         var isPlaying = false;
-        var currentQari = 'ahmed_ibn_ali_ajamy';
+        var currentQari = 'frs_a';
         var audio = document.getElementById('audioPlayer');
         var player = document.getElementById('player');
         var playBtn = document.getElementById('playBtn');
