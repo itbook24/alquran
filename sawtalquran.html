@@ -602,6 +602,12 @@
         function getAudioUrl(surahNumber) {
             var paddedNumber = String(surahNumber).padStart(3, '0');
             var qari = qaris[currentQari];
+            
+            // Special case for Al-Hussary
+            if (currentQari === 'husary') {
+                return 'https://server13.mp3quran.net/husr/' + paddedNumber + '.mp3';
+            }
+            
             return 'https://' + qari.server + '.mp3quran.net/' + qari.folder + '/' + paddedNumber + '.mp3';
         }
 
