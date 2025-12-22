@@ -559,7 +559,7 @@
             'mishari_alafasy': { name: 'Mishary Alafasy', server: 'server8', folder: 'afs' },
             'sds': { name: 'Saad Al-Ghamdi', server: 'server7', folder: 's_gmd' },
             'ahmed_ibn_ali_ajamy': { name: 'Ahmed Al-Ajamy', server: 'server10', folder: 'ajm' },
-            'husary': { name: 'Al-Hussary', server: 'server13', folder: 'husr' },
+            'husary': { name: 'Al-Hussary', server: 'server13', folder: 'husr', directUrl: true },
             'sudais': { name: 'Abdur-Rahman as-Sudais', server: 'server11', folder: 'sds' },
             'maher_almuaiqly': { name: 'Maher Al Muaiqly', server: 'server12', folder: 'maher' },
             'muhammad_ayyub': { name: 'Muhammad Ayyub', server: 'server11', folder: 'muhammad_ayyub' },
@@ -602,12 +602,6 @@
         function getAudioUrl(surahNumber) {
             var paddedNumber = String(surahNumber).padStart(3, '0');
             var qari = qaris[currentQari];
-            
-            // Special case for Al-Hussary
-            if (currentQari === 'husary') {
-                return 'https://server13.mp3quran.net/husr/' + paddedNumber + '.mp3';
-            }
-            
             return 'https://' + qari.server + '.mp3quran.net/' + qari.folder + '/' + paddedNumber + '.mp3';
         }
 
