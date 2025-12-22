@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#00897b">
+    <link rel="manifest" href="manifest.json">
     <title>Sawt Al Quran - صوت القرآن</title>
     <style>
         * {
@@ -557,7 +559,7 @@
             'mishari_alafasy': { name: 'Mishary Alafasy', server: 'server8', folder: 'afs' },
             'sds': { name: 'Saad Al-Ghamdi', server: 'server7', folder: 's_gmd' },
             'ahmed_ibn_ali_ajamy': { name: 'Ahmed Al-Ajamy', server: 'server10', folder: 'ajm' },
-            'husary': { name: 'Al-Hussary', server: 'server8', folder: 'husary' },
+            'husary': { name: 'Al-Hussary', server: 'server6', folder: 'Husary_128kbps' },
             'sudais': { name: 'Abdur-Rahman as-Sudais', server: 'server11', folder: 'sds' },
             'maher_almuaiqly': { name: 'Maher Al Muaiqly', server: 'server12', folder: 'maher' },
             'muhammad_ayyub': { name: 'Muhammad Ayyub', server: 'server11', folder: 'muhammad_ayyub' },
@@ -802,6 +804,18 @@
         });
 
         renderSurahs(surahs);
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registered');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
     </script>
 </body>
 </html>
