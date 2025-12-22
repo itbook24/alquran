@@ -7,6 +7,44 @@
     <link rel="manifest" href="manifest.json">
     <title>Sawt Al Quran - صوت القرآن</title>
     <style>
+        body {
+    overflow-x: hidden; /* Horizontal scrolling বন্ধ করার জন্য */
+}
+
+.container {
+    display: flex;
+    flex-direction: column; /* মোবাইল মোডে কলাম লেআউট */
+    height: 100%;
+}
+
+footer {
+    margin-top: auto; /* footer টি নিচে চলে যাবে */
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
+}
+
+/* Fix for extra white space */
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
+}
+
+        
         * {
             margin: 0;
             padding: 0;
