@@ -766,16 +766,21 @@
         });
 
         function getAudioUrl(surahNumber) {
-    var paddedNumber = String(surahNumber).padStart(3, '0');  // Surah numberকে তিন অঙ্কের হিসেবে প্যাড করুন
-    var qari = qaris[currentQari];  // বর্তমান ক্বারীটি আনার জন্য
-    if (!qari) return '';  // যদি ক্বারী না থাকে, কিছু ফেরত দিবে না
+    var paddedNumber = String(surahNumber).padStart(3, '0');  // Surah number কে তিন অঙ্কের ফরম্যাটে প্যাড করুন
+    var qari = qaris[currentQari];  // current selected qari from qaris object
+    if (!qari) return '';  // If no qari found, return empty string
     
-    // folderPath চেক করুন, যদি folder থাকে তবে তার পাথ যুক্ত হবে
-    var folderPath = qari.folder && qari.folder !== '' ? qari.folder + '/' : '';  // যদি folder থাকে, তাহলে তার পাথ যোগ হবে
-    console.log("Folder Path:", folderPath);  // Debugging purposes
-    console.log("Audio URL:", qari.server + '/' + folderPath + paddedNumber + '.mp3');  // Debugging purposes
+    // Folder path check: if folder exists, append it; otherwise, leave it empty
+    var folderPath = (qari.folder && qari.folder !== '') ? qari.folder + '/' : '';  // Folder path
 
-    return qari.server + '/' + folderPath + paddedNumber + '.mp3';  // লিঙ্ক তৈরি করুন
+    console.log("Folder Path: ", folderPath);  // Debug: check folder path
+
+    // Final audio URL: check server + folder + surah number
+    var audioUrl = qari.server + '/' + folderPath + paddedNumber + '.mp3';  
+
+    console.log("Audio URL: ", audioUrl);  // Debug: check audio URL
+
+    return audioUrl;
 }
 
         function formatTime(seconds) {
