@@ -599,9 +599,9 @@
             // Saudi Arabia 🇸🇦 - All Qaris
             'abdul_mohsen_al_harthy': { name: 'Abdul Mohsen Al Harthy', server: 'server6', folder: 'mohsin_harthi', country: 'saudi' },
             'abdul_mohsen_al_qasim': { name: 'Abdul Mohsen Al-Qasim', server: 'server8', folder: 'qasm', country: 'saudi' },
-            'abdul_rahman_al_majid': { name: 'Abdul Rahman Al Majid', server: 'server11', folder: 'majid', country: 'saudi' },
-            'abdul_rahman_al_awsi': { name: 'Abdul Rahman Al-Awsi', server: 'server11', folder: 'awsi', country: 'saudi' },
-            'abdul_rahman_al_juraidhi': { name: 'Abdul Rahman Al-Juraidhi', server: 'server11', folder: 'juraidhi', country: 'saudi' },
+            'abdul_rahman_al_majid': { name: 'Abdul Rahman Al Majid', server: 'server10', folder: 'a_majed', country: 'saudi' },
+            'abdul_rahman_al_awsi': { name: 'Abdul Rahman Al-Awsi', server: 'server6', folder: 'aloosi', country: 'saudi' },
+            'abdul_rahman_al_juraidhi': { name: 'Abdul Rahman Al-Juraidhi', server: 'https://ia803202.us.archive.org/10/items/aljrrayddi', folder: '', country: 'saudi' },
             'abdul_rahman_al_sudais': { name: 'Abdul Rahman Al-Sudais', server: 'server11', folder: 'sudais', country: 'saudi' },
             'abdulaziz_al_ahmad': { name: 'AbdulAziz Al-Ahmad', server: 'server11', folder: 'ahmad', country: 'saudi' },
             'abdulaziz_al_zahrani': { name: 'Abdulaziz Al-Zahrani', server: 'server11', folder: 'zahrani', country: 'saudi' },
@@ -766,11 +766,13 @@
         });
 
         function getAudioUrl(surahNumber) {
-            var paddedNumber = String(surahNumber).padStart(3, '0');
-            var qari = qaris[currentQari];
-            if (!qari) return '';
-            return 'https://' + qari.server + '.mp3quran.net/' + qari.folder + '/' + paddedNumber + '.mp3';
-        }
+    var paddedNumber = String(surahNumber).padStart(3, '0');
+    var qari = qaris[currentQari];
+    if (!qari) return '';
+    
+    var folderPath = qari.folder ? qari.folder + '/' : '';
+    return qari.server + '/' + folderPath + paddedNumber + '.mp3';
+}
 
         function formatTime(seconds) {
             if (!seconds || isNaN(seconds)) return '0:00';
