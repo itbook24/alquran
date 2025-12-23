@@ -382,21 +382,37 @@
                     <option value="">🌍 All Countries</option>
                     <option value="saudi">🇸🇦 Saudi Arabia</option>
                     <option value="egypt">🇪🇬 Egypt</option>
-                    <option value="uae">🇦🇪 UAE</option>
+                    <option value="morocco">🇲🇦 Morocco</option>
+                    <option value="sudan">🇸🇩 Sudan</option>
+                    <option value="iraq">🇮🇶 Iraq</option>
+                    <option value="syria">🇸🇾 Syria</option>
                     <option value="yemen">🇾🇪 Yemen</option>
+                    <option value="kuwait">🇰🇼 Kuwait</option>
+                    <option value="libya">🇱🇾 Libya</option>
+                    <option value="algeria">🇩🇿 Algeria</option>
+                    <option value="somalia">🇸🇴 Somalia</option>
+                    <option value="turkey">🇹🇷 Turkey</option>
+                    <option value="bahrain">🇧🇭 Bahrain</option>
+                    <option value="uae">🇦🇪 UAE</option>
                     <option value="jordan">🇯🇴 Jordan</option>
+                    <option value="lebanon">🇱🇧 Lebanon</option>
+                    <option value="iran">🇮🇷 Iran</option>
+                    <option value="qatar">🇶🇦 Qatar</option>
+                    <option value="pakistan">🇵🇰 Pakistan</option>
+                    <option value="palestine">🇵🇸 Palestine</option>
+                    <option value="senegal">🇸🇳 Senegal</option>
                 </select>
                 <select id="qariSelect">
-                    <option value="frs_a">Fares Abbad</option>
-                    <option value="abdulbasit_murattal">Abdul Basit</option>
-                    <option value="mishari_alafasy">Mishary Alafasy</option>
-                    <option value="sds">Saad Al-Ghamdi</option>
-                    <option value="ahmed_ibn_ali_ajamy">Ahmed Al-Ajamy</option>
-                    <option value="husary">Al-Hussary</option>
-                    <option value="sudais">Abdur-Rahman as-Sudais</option>
+                    <option value="fares_abbad">Fares Abbad</option>
+                    <option value="abdul_basit">Abdul Basit</option>
+                    <option value="mishary_alafasy">Mishary Alafasy</option>
+                    <option value="saad_alghamdi">Saad Al-Ghamdi</option>
+                    <option value="ahmed_alajmy">Ahmed Al-Ajmy</option>
+                    <option value="alhussary">Al-Hussary</option>
+                    <option value="abdulrahman_sudais">Abdur-Rahman as-Sudais</option>
                     <option value="maher_almuaiqly">Maher Al Muaiqly</option>
                     <option value="muhammad_ayyub">Muhammad Ayyub</option>
-                    <option value="yasser_ad-dussary">Yasser Al-Dosari</option>
+                    <option value="yasser_aldosari">Yasser Al-Dosari</option>
                 </select>
                 <input type="text" id="searchInput" placeholder="Search Surah...">
             </div>
@@ -582,21 +598,88 @@
         ];
 
         var qaris = {
-            'frs_a': { name: 'Fares Abbad', server: 'server8', folder: 'frs_a', country: 'jordan' },
-            'abdulbasit_murattal': { name: 'Abdul Basit', server: 'server7', folder: 'basit', country: 'egypt' },
-            'mishari_alafasy': { name: 'Mishary Alafasy', server: 'server8', folder: 'afs', country: 'uae' },
-            'sds': { name: 'Saad Al-Ghamdi', server: 'server7', folder: 's_gmd', country: 'saudi' },
-            'ahmed_ibn_ali_ajamy': { name: 'Ahmed Al-Ajamy', server: 'server10', folder: 'ajm', country: 'uae' },
-            'husary': { name: 'Al-Hussary', server: 'server13', folder: 'husr', country: 'egypt' },
-            'sudais': { name: 'Abdur-Rahman as-Sudais', server: 'server11', folder: 'sds', country: 'saudi' },
+            // Yemen 🇾🇪
+            'fares_abbad': { name: 'Fares Abbad', server: 'server8', folder: 'frs_a', country: 'yemen' },
+            'muhammad_alfaqih': { name: 'Muhammad Al Faqih', server: 'server8', folder: 'faqih', country: 'yemen' },
+            'wadie_alyamni': { name: 'Wadie Alyamni', server: 'server8', folder: 'alyamni', country: 'yemen' },
+            
+            // Egypt 🇪🇬
+            'abdul_basit': { name: 'Abdul Basit', server: 'server7', folder: 'basit', country: 'egypt' },
+            'alhussary': { name: 'Al-Hussary', server: 'server13', folder: 'husr', country: 'egypt' },
+            'mustafa_ismail': { name: 'Mustafa Ismail', server: 'server7', folder: 'mustafa', country: 'egypt' },
+            'muhammad_siddiq_alminshawi': { name: 'Muhammad Siddiq Al-Minshawi', server: 'server7', folder: 'minshawi', country: 'egypt' },
+            
+            // Saudi Arabia 🇸🇦
+            'saad_alghamdi': { name: 'Saad Al-Ghamdi', server: 'server7', folder: 's_gmd', country: 'saudi' },
+            'abdulrahman_sudais': { name: 'Abdur-Rahman as-Sudais', server: 'server11', folder: 'sds', country: 'saudi' },
             'maher_almuaiqly': { name: 'Maher Al Muaiqly', server: 'server12', folder: 'maher', country: 'saudi' },
             'muhammad_ayyub': { name: 'Muhammad Ayyub', server: 'server8', folder: 'ayyub', country: 'saudi' },
-            'yasser_ad-dussary': { name: 'Yasser Al-Dosari', server: 'server14', folder: 'yasir_ad-dusuqy', country: 'yemen' }
+            'saud_alshuraim': { name: 'Saud Al-Shuraim', server: 'server11', folder: 'shuraim', country: 'saudi' },
+            'yasser_aldosari': { name: 'Yasser Al-Dosari', server: 'server14', folder: 'yasir_ad-dusuqy', country: 'saudi' },
+            'abdullah_basfar': { name: 'Abdullah Basfar', server: 'server8', folder: 'basfar', country: 'saudi' },
+            
+            // UAE 🇦🇪
+            'ahmed_alajmy': { name: 'Ahmed Al-Ajmy', server: 'server10', folder: 'ajm', country: 'uae' },
+            'mishary_alafasy': { name: 'Mishary Alafasy', server: 'server8', folder: 'afs', country: 'uae' },
+            'khalifa_altunaiji': { name: 'Khalifa Al Tunaiji', server: 'server8', folder: 'tunaiji', country: 'uae' },
+            
+            // Kuwait 🇰🇼
+            'fahad_almutairi': { name: 'Fahad Almutairi', server: 'server8', folder: 'fahad', country: 'kuwait' },
+            'salah_alhashem': { name: 'Salah Al-Hashem', server: 'server8', folder: 'salah_hashem', country: 'kuwait' },
+            
+            // Jordan 🇯🇴
+            'hamza_elfar': { name: 'Hamza El Far', server: 'server8', folder: 'hamza', country: 'jordan' },
+            
+            // Algeria 🇩🇿
+            'yassin_aljazaery': { name: 'Yassin Al-Jazaery', server: 'server8', folder: 'yassin', country: 'algeria' },
+            
+            // Morocco 🇲🇦
+            'mohammed_said': { name: 'Mohammed Said', server: 'server8', folder: 'mohammed_said', country: 'morocco' },
+            'abdelrahman_benmoussa': { name: 'Abdel Rahman Benmoussa', server: 'server8', folder: 'benmoussa', country: 'morocco' },
+            
+            // Sudan 🇸🇩
+            'abdualhaleem_hussain': { name: 'Abdualhaleem Hussain', server: 'server8', folder: 'haleem', country: 'sudan' },
+            
+            // Iraq 🇮🇶
+            'amer_alkazemi': { name: 'Amer Al-Kazemi', server: 'server8', folder: 'kazemi', country: 'iraq' },
+            
+            // Syria 🇸🇾
+            'yahya_hawwa': { name: 'Yahya Hawwa', server: 'server8', folder: 'hawwa', country: 'syria' },
+            
+            // Libya 🇱🇾
+            'muhammad_alhudayri': { name: 'Muhammad Al-Hudayri', server: 'server8', folder: 'hudayri', country: 'libya' },
+            
+            // Somalia 🇸🇴
+            'abdul_rashid_sufi': { name: 'Abdul Rashid Sufi', server: 'server8', folder: 'sufi', country: 'somalia' },
+            
+            // Turkey 🇹🇷
+            'fatih_cholak': { name: 'Fatih Cholak', server: 'server8', folder: 'cholak', country: 'turkey' },
+            
+            // Bahrain 🇧🇭
+            'anas_alemadi': { name: 'Anas Alemadi', server: 'server8', folder: 'alemadi', country: 'bahrain' },
+            
+            // Lebanon 🇱🇧
+            'ahmet_khader_trabelsi': { name: 'Ahmet Khader Trabelsi', server: 'server8', folder: 'trabelsi', country: 'lebanon' },
+            
+            // Iran 🇮🇷
+            'karim_mansouri': { name: 'Karim Mansouri', server: 'server8', folder: 'mansouri', country: 'iran' },
+            
+            // Qatar 🇶🇦
+            'maher_alwan': { name: 'Maher Alwan', server: 'server8', folder: 'alwan', country: 'qatar' },
+            
+            // Pakistan 🇵🇰
+            'sadaqat_ali': { name: 'Sadaqat Ali', server: 'server8', folder: 'sadaqat', country: 'pakistan' },
+            
+            // Palestine 🇵🇸
+            'muhammad_rashad_alsharif': { name: 'Muhammad Rashad Al-Sharif', server: 'server8', folder: 'rashad', country: 'palestine' },
+            
+            // Senegal 🇸🇳
+            'hadi_toure': { name: 'Hadi Toure', server: 'server8', folder: 'toure', country: 'senegal' }
         };
 
         var currentSurah = null;
         var isPlaying = false;
-        var currentQari = 'frs_a';
+        var currentQari = 'fares_abbad';
         var audio = document.getElementById('audioPlayer');
         var player = document.getElementById('player');
         var playBtn = document.getElementById('playBtn');
@@ -617,6 +700,11 @@
             var qariSelectEl = document.getElementById('qariSelect');
             qariSelectEl.innerHTML = '';
             
+            var defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'Select Qari';
+            qariSelectEl.appendChild(defaultOption);
+            
             for (var key in qaris) {
                 var qari = qaris[key];
                 if (country === '' || qari.country === country) {
@@ -627,7 +715,11 @@
                 }
             }
             
-            currentQari = qariSelectEl.value;
+            if (qariSelectEl.options.length > 1) {
+                qariSelectEl.value = qariSelectEl.options[1].value;
+                currentQari = qariSelectEl.value;
+            }
+            
             if (currentSurah) {
                 audio.src = getAudioUrl(currentSurah.number);
                 updatePlayerUI(currentSurah);
@@ -656,6 +748,7 @@
         function getAudioUrl(surahNumber) {
             var paddedNumber = String(surahNumber).padStart(3, '0');
             var qari = qaris[currentQari];
+            if (!qari) return '';
             return 'https://' + qari.server + '.mp3quran.net/' + qari.folder + '/' + paddedNumber + '.mp3';
         }
 
@@ -675,6 +768,11 @@
         }
 
         function playSurah(surah) {
+            if (!currentQari || currentQari === '') {
+                alert('Please select a Qari first');
+                return;
+            }
+            
             if (currentSurah && currentSurah.number === surah.number && isPlaying) {
                 audio.pause();
                 isPlaying = false;
@@ -748,6 +846,11 @@
         }
 
         function downloadSurah(surah) {
+            if (!currentQari || currentQari === '') {
+                alert('Please select a Qari first');
+                return;
+            }
+            
             var url = getAudioUrl(surah.number);
             var a = document.createElement('a');
             a.href = url;
@@ -857,6 +960,8 @@
             renderSurahs(filtered);
         });
 
+        // Initialize
+        filterQarisByCountry('');
         renderSurahs(surahs);
 
         if ('serviceWorker' in navigator) {
