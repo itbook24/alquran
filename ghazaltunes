@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghazal Music App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .filters select, .filters button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .music-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .music-item {
+            width: 30%;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .music-item h3 {
+            margin-bottom: 10px;
+        }
+
+        .music-item button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .music-item button.fav {
+            background-color: #FF5722;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Ghazal Music App</h1>
+        </header>
+
+        <div class="filters">
+            <select id="categoryFilter" onchange="filterCategory()">
+                <option value="">Select Category</option>
+                <option value="romantic">Romantic</option>
+                <option value="sad">Sad</option>
+                <option value="inspirational">Inspirational</option>
+            </select>
+
+            <select id="artistFilter" onchange="filterArtist()">
+                <option value="">Select Artist</option>
+                <option value="artist1">Artist 1</option>
+                <option value="artist2">Artist 2</option>
+            </select>
+
+            <button onclick="sortAZ()">A to Z</button>
+            <button onclick="sortZA()">Z to A</button>
+        </div>
+
+        <div id="musicList" class="music-list">
+            <!-- Dynamic Music List Will Go Here -->
+        </div>
+    </div>
+
+    <script>
+        let musicData = [
+            {title: 'Ghazal 1', artist: 'artist1', category: 'romantic', file: 'path_to_file1.mp3'},
+            {title: 'Ghazal 2', artist: 'artist2', category: 'sad', file: 'path_to_file2.mp3'},
+            {title: 'Ghazal 3', artist: 'artist1', category: 'inspirational', file: 'path_to_file3.mp3'},
+            // Add more music objects here
+        ];
+
+        function renderMusicList(filteredData) {
+            const musicListContainer = document.getElementById('musicList');
+            musicListContainer.innerHTML = '';
+            
+            filteredData.forEach(music => {
+                const musicItem = document.createElement('div');
+                musicItem.classList.add('music-item');
+
+                musicItem.innerHTML = `
+                    <h3>${music.title}</h3>
+                    <p>${music.artist}</p>
+                    <audio controls>
+                        <source src="${music.file}" type="audio/mp3">
+                    </audio>
+                    <div>
+                        <button class="download-btn">Download</button>
+                        <button class="fav" onclick="addToFavorites('${music.title}')">Favorite</button>
+                    </div>
+                `;
+                
+                musicListContainer.appendChild(musicItem);
+            });
+        }
+
+        function filterCategory() {
+            const selectedCategory = document.getElementById('categoryFilter').value;
+            const filteredData = musicData.filter(music => selectedCategory ? music.category === selectedCategory : true);
+            renderMusicList(filteredData);
+        }
+
+        function filterArtist() {
+            const selectedArtist = document.getElementById('artistFilter').value;
+            const filteredData = musicData.filter(music => selectedArtist ? music.artist === selectedArtist : true);
+            renderMusicList(filteredData);
+        }
+
+        function sortAZ() {
+            const sortedData = [...musicData].sort((a, b) => a.title.localeCompare(b.title));
+            renderMusicList(sortedData);
+        }
+
+        function sortZA() {
+            const sortedData = [...musicData].sort((a, b) => b.title.localeCompare(a.title));
+            renderMusicList(sortedData);
+        }
+
+        function addToFavorites(title) {
+            alert(`${title} added to favorites!`);
+            // Implement favorite functionality
+        }
+
+        // Initial rendering
+        renderMusicList(musicData);
+    </script>
+</body>
+</html>
