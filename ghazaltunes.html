@@ -59,6 +59,11 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .music-item:hover {
+            transform: scale(1.05);
         }
 
         .music-item h3 {
@@ -77,6 +82,20 @@
 
         .music-item button.fav {
             background-color: #FF5722;
+        }
+
+        .loading {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .more-btn {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -105,7 +124,15 @@
         </div>
 
         <div id="musicList" class="music-list">
-            <!-- Dynamic Music List Will Go Here -->
+            <!-- Music cards will appear here -->
+        </div>
+
+        <div id="loading" class="loading" style="display:none;">
+            <p>Loading more music...</p>
+        </div>
+
+        <div class="more-btn-container" style="text-align: center;">
+            <button id="moreBtn" class="more-btn" onclick="loadMore()">Load More</button>
         </div>
     </div>
 
@@ -114,17 +141,41 @@
             {title: 'Ghazal 1', artist: 'artist1', category: 'romantic', file: 'path_to_file1.mp3'},
             {title: 'Ghazal 2', artist: 'artist2', category: 'sad', file: 'path_to_file2.mp3'},
             {title: 'Ghazal 3', artist: 'artist1', category: 'inspirational', file: 'path_to_file3.mp3'},
-            // Add more music objects here
+            {title: 'Ghazal 4', artist: 'artist1', category: 'romantic', file: 'path_to_file4.mp3'},
+            {title: 'Ghazal 5', artist: 'artist2', category: 'sad', file: 'path_to_file5.mp3'},
+            {title: 'Ghazal 6', artist: 'artist1', category: 'inspirational', file: 'path_to_file6.mp3'},
+            {title: 'Ghazal 7', artist: 'artist2', category: 'romantic', file: 'path_to_file7.mp3'},
+            {title: 'Ghazal 8', artist: 'artist1', category: 'sad', file: 'path_to_file8.mp3'},
+            {title: 'Ghazal 9', artist: 'artist2', category: 'inspirational', file: 'path_to_file9.mp3'},
+            {title: 'Ghazal 10', artist: 'artist1', category: 'romantic', file: 'path_to_file10.mp3'},
+            {title: 'Ghazal 11', artist: 'artist2', category: 'sad', file: 'path_to_file11.mp3'},
+            {title: 'Ghazal 12', artist: 'artist1', category: 'inspirational', file: 'path_to_file12.mp3'},
+            {title: 'Ghazal 13', artist: 'artist2', category: 'romantic', file: 'path_to_file13.mp3'},
+            {title: 'Ghazal 14', artist: 'artist1', category: 'sad', file: 'path_to_file14.mp3'},
+            {title: 'Ghazal 15', artist: 'artist1', category: 'inspirational', file: 'path_to_file15.mp3'},
+            {title: 'Ghazal 16', artist: 'artist2', category: 'romantic', file: 'path_to_file16.mp3'},
+            {title: 'Ghazal 17', artist: 'artist1', category: 'sad', file: 'path_to_file17.mp3'},
+            {title: 'Ghazal 18', artist: 'artist2', category: 'inspirational', file: 'path_to_file18.mp3'},
+            {title: 'Ghazal 19', artist: 'artist1', category: 'romantic', file: 'path_to_file19.mp3'},
+            {title: 'Ghazal 20', artist: 'artist2', category: 'sad', file: 'path_to_file20.mp3'},
+            {title: 'Ghazal 21', artist: 'artist1', category: 'inspirational', file: 'path_to_file21.mp3'},
+            {title: 'Ghazal 22', artist: 'artist2', category: 'romantic', file: 'path_to_file22.mp3'},
+            {title: 'Ghazal 23', artist: 'artist1', category: 'sad', file: 'path_to_file23.mp3'},
+            {title: 'Ghazal 24', artist: 'artist2', category: 'inspirational', file: 'path_to_file24.mp3'},
+            {title: 'Ghazal 25', artist: 'artist1', category: 'romantic', file: 'path_to_file25.mp3'},
+            {title: 'Ghazal 26', artist: 'artist2', category: 'sad', file: 'path_to_file26.mp3'}
         ];
 
-        function renderMusicList(filteredData) {
-            const musicListContainer = document.getElementById('musicList');
+        let displayedMusic = 20;  // Show 20 initially
+        const musicListContainer = document.getElementById('musicList');
+
+        function renderMusicList() {
+            const musicList = musicData.slice(0, displayedMusic);
             musicListContainer.innerHTML = '';
-            
-            filteredData.forEach(music => {
+
+            musicList.forEach(music => {
                 const musicItem = document.createElement('div');
                 musicItem.classList.add('music-item');
-
                 musicItem.innerHTML = `
                     <h3>${music.title}</h3>
                     <p>${music.artist}</p>
@@ -136,40 +187,27 @@
                         <button class="fav" onclick="addToFavorites('${music.title}')">Favorite</button>
                     </div>
                 `;
-                
                 musicListContainer.appendChild(musicItem);
             });
         }
 
-        function filterCategory() {
-            const selectedCategory = document.getElementById('categoryFilter').value;
-            const filteredData = musicData.filter(music => selectedCategory ? music.category === selectedCategory : true);
-            renderMusicList(filteredData);
-        }
-
-        function filterArtist() {
-            const selectedArtist = document.getElementById('artistFilter').value;
-            const filteredData = musicData.filter(music => selectedArtist ? music.artist === selectedArtist : true);
-            renderMusicList(filteredData);
-        }
-
-        function sortAZ() {
-            const sortedData = [...musicData].sort((a, b) => a.title.localeCompare(b.title));
-            renderMusicList(sortedData);
-        }
-
-        function sortZA() {
-            const sortedData = [...musicData].sort((a, b) => b.title.localeCompare(a.title));
-            renderMusicList(sortedData);
-        }
-
         function addToFavorites(title) {
             alert(`${title} added to favorites!`);
-            // Implement favorite functionality
         }
 
-        // Initial rendering
-        renderMusicList(musicData);
+        function loadMore() {
+            document.getElementById('loading').style.display = 'block';
+            setTimeout(() => {
+                displayedMusic += 20;
+                renderMusicList();
+                document.getElementById('loading').style.display = 'none';
+                if (displayedMusic >= musicData.length) {
+                    document.getElementById('moreBtn').style.display = 'none';
+                }
+            }, 1000);  // Simulate loading time
+        }
+
+        renderMusicList();
     </script>
 </body>
 </html>
