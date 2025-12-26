@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ghazal Music App</title>
     <style>
+        /* Global styles */
         * {
             margin: 0;
             padding: 0;
@@ -12,90 +13,188 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px;
             background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
 
         header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         h1 {
-            color: #333;
+            color: #2b2b2b;
+            font-size: 36px;
+            font-weight: bold;
+            letter-spacing: 2px;
         }
 
+        /* Filter Section */
         .filters {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
-        .filters select, .filters button {
-            padding: 10px;
-            border: 1px solid #ddd;
+        .filters select,
+        .filters button {
+            padding: 10px 20px;
+            border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
-        }
-
-        .music-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: space-between;
-        }
-
-        .music-item {
-            width: 30%;
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
-        }
-
-        .music-item:hover {
-            transform: scale(1.05);
-        }
-
-        .music-item h3 {
-            margin-bottom: 10px;
-        }
-
-        .music-item button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
+            background-color: #fff;
             cursor: pointer;
-            border-radius: 5px;
-            margin-right: 10px;
+            transition: all 0.3s;
         }
 
-        .music-item button.fav {
-            background-color: #FF5722;
-        }
-
-        .loading {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .more-btn {
-            padding: 10px 20px;
+        .filters button {
             background-color: #007BFF;
             color: white;
             border: none;
+        }
+
+        .filters select:hover,
+        .filters button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Music Cards */
+        .music-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .music-item {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s ease-in-out;
+            overflow: hidden;
+        }
+
+        .music-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .music-item h3 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .music-item p {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #777;
+        }
+
+        audio {
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .music-item button {
+            padding: 12px 20px;
+            border-radius: 5px;
+            border: none;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .download-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .fav {
+            background-color: #FF5722;
+            color: white;
+        }
+
+        .music-item button:hover {
+            opacity: 0.9;
+        }
+
+        /* Loading & More Button */
+        .loading {
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .more-btn-container {
+            text-align: center;
+        }
+
+        .more-btn {
+            padding: 12px 25px;
+            background-color: #28a745;
+            color: white;
+            font-size: 18px;
+            border: none;
             cursor: pointer;
             border-radius: 5px;
+        }
+
+        .more-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filters select,
+            .filters button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .more-btn {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .music-item {
+                padding: 15px;
+            }
+
+            .music-item h3 {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+
+            .music-item h3 {
+                font-size: 16px;
+            }
+
+            .filters select,
+            .filters button {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -127,11 +226,11 @@
             <!-- Music cards will appear here -->
         </div>
 
-        <div id="loading" class="loading" style="display:none;">
+        <div id="loading" class="loading">
             <p>Loading more music...</p>
         </div>
 
-        <div class="more-btn-container" style="text-align: center;">
+        <div class="more-btn-container">
             <button id="moreBtn" class="more-btn" onclick="loadMore()">Load More</button>
         </div>
     </div>
@@ -148,22 +247,7 @@
             {title: 'Ghazal 8', artist: 'artist1', category: 'sad', file: 'path_to_file8.mp3'},
             {title: 'Ghazal 9', artist: 'artist2', category: 'inspirational', file: 'path_to_file9.mp3'},
             {title: 'Ghazal 10', artist: 'artist1', category: 'romantic', file: 'path_to_file10.mp3'},
-            {title: 'Ghazal 11', artist: 'artist2', category: 'sad', file: 'path_to_file11.mp3'},
-            {title: 'Ghazal 12', artist: 'artist1', category: 'inspirational', file: 'path_to_file12.mp3'},
-            {title: 'Ghazal 13', artist: 'artist2', category: 'romantic', file: 'path_to_file13.mp3'},
-            {title: 'Ghazal 14', artist: 'artist1', category: 'sad', file: 'path_to_file14.mp3'},
-            {title: 'Ghazal 15', artist: 'artist1', category: 'inspirational', file: 'path_to_file15.mp3'},
-            {title: 'Ghazal 16', artist: 'artist2', category: 'romantic', file: 'path_to_file16.mp3'},
-            {title: 'Ghazal 17', artist: 'artist1', category: 'sad', file: 'path_to_file17.mp3'},
-            {title: 'Ghazal 18', artist: 'artist2', category: 'inspirational', file: 'path_to_file18.mp3'},
-            {title: 'Ghazal 19', artist: 'artist1', category: 'romantic', file: 'path_to_file19.mp3'},
-            {title: 'Ghazal 20', artist: 'artist2', category: 'sad', file: 'path_to_file20.mp3'},
-            {title: 'Ghazal 21', artist: 'artist1', category: 'inspirational', file: 'path_to_file21.mp3'},
-            {title: 'Ghazal 22', artist: 'artist2', category: 'romantic', file: 'path_to_file22.mp3'},
-            {title: 'Ghazal 23', artist: 'artist1', category: 'sad', file: 'path_to_file23.mp3'},
-            {title: 'Ghazal 24', artist: 'artist2', category: 'inspirational', file: 'path_to_file24.mp3'},
-            {title: 'Ghazal 25', artist: 'artist1', category: 'romantic', file: 'path_to_file25.mp3'},
-            {title: 'Ghazal 26', artist: 'artist2', category: 'sad', file: 'path_to_file26.mp3'}
+            // Add more music objects here...
         ];
 
         let displayedMusic = 20;  // Show 20 initially
