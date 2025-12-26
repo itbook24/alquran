@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+ <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
@@ -49,7 +50,7 @@
 
         .header-controls {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr; /* 4 columns for language selector */
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
         }
 
@@ -71,7 +72,7 @@
 
         @media (max-width: 768px) {
             .header-controls {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: 1fr 1fr 1fr;
                 gap: 8px;
             }
             
@@ -84,7 +85,7 @@
 
         @media (max-width: 480px) {
             .header-controls {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr 1fr;
                 gap: 6px;
             }
             
@@ -378,13 +379,6 @@
                 <h2>Complete Quran Audio Collection</h2>
             </div>
             <div class="header-controls">
-                <!-- Language Selector Added Here -->
-                <select id="languageSelect">
-                    <option value="english">English</option>
-                    <option value="arabic">العربية</option>
-                    <option value="bengali">বাংলা</option>
-                    <option value="urdu">اردو</option>
-                </select>
                 <select id="countrySelect">
                     <option value="">🌍 All Countries</option>
                     <option value="saudi">🇸🇦 Saudi Arabia</option>
@@ -485,487 +479,224 @@
     <audio id="audioPlayer"></audio>
 
     <script>
-        // Language Data - All 114 Surahs in 4 languages
-        var surahNames = {
-            english: [
-                { number: 1, name: "Al-Fatihah", verses: 7 },
-                { number: 2, name: "Al-Baqarah", verses: 286 },
-                { number: 3, name: "Aali Imran", verses: 200 },
-                { number: 4, name: "An-Nisa", verses: 176 },
-                { number: 5, name: "Al-Ma'idah", verses: 120 },
-                { number: 6, name: "Al-An'am", verses: 165 },
-                { number: 7, name: "Al-A'raf", verses: 206 },
-                { number: 8, name: "Al-Anfal", verses: 75 },
-                { number: 9, name: "At-Tawbah", verses: 129 },
-                { number: 10, name: "Yunus", verses: 109 },
-                { number: 11, name: "Hud", verses: 123 },
-                { number: 12, name: "Yusuf", verses: 111 },
-                { number: 13, name: "Ar-Ra'd", verses: 43 },
-                { number: 14, name: "Ibrahim", verses: 52 },
-                { number: 15, name: "Al-Hijr", verses: 99 },
-                { number: 16, name: "An-Nahl", verses: 128 },
-                { number: 17, name: "Al-Isra", verses: 111 },
-                { number: 18, name: "Al-Kahf", verses: 110 },
-                { number: 19, name: "Maryam", verses: 98 },
-                { number: 20, name: "Ta-Ha", verses: 135 },
-                { number: 21, name: "Al-Anbiya", verses: 112 },
-                { number: 22, name: "Al-Hajj", verses: 78 },
-                { number: 23, name: "Al-Mu'minun", verses: 118 },
-                { number: 24, name: "An-Nur", verses: 64 },
-                { number: 25, name: "Al-Furqan", verses: 77 },
-                { number: 26, name: "Ash-Shu'ara", verses: 227 },
-                { number: 27, name: "An-Naml", verses: 93 },
-                { number: 28, name: "Al-Qasas", verses: 88 },
-                { number: 29, name: "Al-Ankabut", verses: 69 },
-                { number: 30, name: "Ar-Rum", verses: 60 },
-                { number: 31, name: "Luqman", verses: 34 },
-                { number: 32, name: "As-Sajdah", verses: 30 },
-                { number: 33, name: "Al-Ahzab", verses: 73 },
-                { number: 34, name: "Saba", verses: 54 },
-                { number: 35, name: "Fatir", verses: 45 },
-                { number: 36, name: "Ya-Sin", verses: 83 },
-                { number: 37, name: "As-Saffat", verses: 182 },
-                { number: 38, name: "Sad", verses: 88 },
-                { number: 39, name: "Az-Zumar", verses: 75 },
-                { number: 40, name: "Ghafir", verses: 85 },
-                { number: 41, name: "Fussilat", verses: 54 },
-                { number: 42, name: "Ash-Shura", verses: 53 },
-                { number: 43, name: "Az-Zukhruf", verses: 89 },
-                { number: 44, name: "Ad-Dukhan", verses: 59 },
-                { number: 45, name: "Al-Jathiyah", verses: 37 },
-                { number: 46, name: "Al-Ahqaf", verses: 35 },
-                { number: 47, name: "Muhammad", verses: 38 },
-                { number: 48, name: "Al-Fath", verses: 29 },
-                { number: 49, name: "Al-Hujurat", verses: 18 },
-                { number: 50, name: "Qaf", verses: 45 },
-                { number: 51, name: "Adh-Dhariyat", verses: 60 },
-                { number: 52, name: "At-Tur", verses: 49 },
-                { number: 53, name: "An-Najm", verses: 62 },
-                { number: 54, name: "Al-Qamar", verses: 55 },
-                { number: 55, name: "Ar-Rahman", verses: 78 },
-                { number: 56, name: "Al-Waqi'ah", verses: 96 },
-                { number: 57, name: "Al-Hadid", verses: 29 },
-                { number: 58, name: "Al-Mujadila", verses: 22 },
-                { number: 59, name: "Al-Hashr", verses: 24 },
-                { number: 60, name: "Al-Mumtahanah", verses: 13 },
-                { number: 61, name: "As-Saf", verses: 14 },
-                { number: 62, name: "Al-Jumu'ah", verses: 11 },
-                { number: 63, name: "Al-Munafiqun", verses: 11 },
-                { number: 64, name: "At-Taghabun", verses: 18 },
-                { number: 65, name: "At-Talaq", verses: 12 },
-                { number: 66, name: "At-Tahrim", verses: 12 },
-                { number: 67, name: "Al-Mulk", verses: 30 },
-                { number: 68, name: "Al-Qalam", verses: 52 },
-                { number: 69, name: "Al-Haqqah", verses: 52 },
-                { number: 70, name: "Al-Ma'arij", verses: 44 },
-                { number: 71, name: "Nuh", verses: 28 },
-                { number: 72, name: "Al-Jinn", verses: 28 },
-                { number: 73, name: "Al-Muzzammil", verses: 20 },
-                { number: 74, name: "Al-Muddaththir", verses: 56 },
-                { number: 75, name: "Al-Qiyamah", verses: 40 },
-                { number: 76, name: "Al-Insan", verses: 31 },
-                { number: 77, name: "Al-Mursalat", verses: 50 },
-                { number: 78, name: "An-Naba", verses: 40 },
-                { number: 79, name: "An-Nazi'at", verses: 46 },
-                { number: 80, name: "Abasa", verses: 42 },
-                { number: 81, name: "At-Takwir", verses: 29 },
-                { number: 82, name: "Al-Infitar", verses: 19 },
-                { number: 83, name: "Al-Mutaffifin", verses: 36 },
-                { number: 84, name: "Al-Inshiqaq", verses: 25 },
-                { number: 85, name: "Al-Buruj", verses: 22 },
-                { number: 86, name: "At-Tariq", verses: 17 },
-                { number: 87, name: "Al-A'la", verses: 19 },
-                { number: 88, name: "Al-Ghashiyah", verses: 26 },
-                { number: 89, name: "Al-Fajr", verses: 30 },
-                { number: 90, name: "Al-Balad", verses: 20 },
-                { number: 91, name: "Ash-Shams", verses: 15 },
-                { number: 92, name: "Al-Layl", verses: 21 },
-                { number: 93, name: "Ad-Duha", verses: 11 },
-                { number: 94, name: "Ash-Sharh", verses: 8 },
-                { number: 95, name: "At-Tin", verses: 8 },
-                { number: 96, name: "Al-Alaq", verses: 19 },
-                { number: 97, name: "Al-Qadr", verses: 5 },
-                { number: 98, name: "Al-Bayyinah", verses: 8 },
-                { number: 99, name: "Az-Zalzalah", verses: 8 },
-                { number: 100, name: "Al-Adiyat", verses: 11 },
-                { number: 101, name: "Al-Qari'ah", verses: 11 },
-                { number: 102, name: "At-Takathur", verses: 8 },
-                { number: 103, name: "Al-Asr", verses: 3 },
-                { number: 104, name: "Al-Humazah", verses: 9 },
-                { number: 105, name: "Al-Fil", verses: 5 },
-                { number: 106, name: "Quraysh", verses: 4 },
-                { number: 107, name: "Al-Ma'un", verses: 7 },
-                { number: 108, name: "Al-Kawthar", verses: 3 },
-                { number: 109, name: "Al-Kafirun", verses: 6 },
-                { number: 110, name: "An-Nasr", verses: 3 },
-                { number: 111, name: "Al-Masad", verses: 5 },
-                { number: 112, name: "Al-Ikhlas", verses: 4 },
-                { number: 113, name: "Al-Falaq", verses: 5 },
-                { number: 114, name: "An-Nas", verses: 6 }
-            ],
-            arabic: [
-                { number: 1, name: "الفاتحة", verses: 7 },
-                { number: 2, name: "البقرة", verses: 286 },
-                { number: 3, name: "آل عمران", verses: 200 },
-                { number: 4, name: "النساء", verses: 176 },
-                { number: 5, name: "المائدة", verses: 120 },
-                { number: 6, name: "الأنعام", verses: 165 },
-                { number: 7, name: "الأعراف", verses: 206 },
-                { number: 8, name: "الأنفال", verses: 75 },
-                { number: 9, name: "التوبة", verses: 129 },
-                { number: 10, name: "يونس", verses: 109 },
-                { number: 11, name: "هود", verses: 123 },
-                { number: 12, name: "يوسف", verses: 111 },
-                { number: 13, name: "الرعد", verses: 43 },
-                { number: 14, name: "ابراهيم", verses: 52 },
-                { number: 15, name: "الحجر", verses: 99 },
-                { number: 16, name: "النحل", verses: 128 },
-                { number: 17, name: "الإسراء", verses: 111 },
-                { number: 18, name: "الكهف", verses: 110 },
-                { number: 19, name: "مريم", verses: 98 },
-                { number: 20, name: "طه", verses: 135 },
-                { number: 21, name: "الأنبياء", verses: 112 },
-                { number: 22, name: "الحج", verses: 78 },
-                { number: 23, name: "المؤمنون", verses: 118 },
-                { number: 24, name: "النور", verses: 64 },
-                { number: 25, name: "الفرقان", verses: 77 },
-                { number: 26, name: "الشعراء", verses: 227 },
-                { number: 27, name: "النمل", verses: 93 },
-                { number: 28, name: "القصص", verses: 88 },
-                { number: 29, name: "العنكبوت", verses: 69 },
-                { number: 30, name: "الروم", verses: 60 },
-                { number: 31, name: "لقمان", verses: 34 },
-                { number: 32, name: "السجدة", verses: 30 },
-                { number: 33, name: "الأحزاب", verses: 73 },
-                { number: 34, name: "سبإ", verses: 54 },
-                { number: 35, name: "فاطر", verses: 45 },
-                { number: 36, name: "يس", verses: 83 },
-                { number: 37, name: "الصافات", verses: 182 },
-                { number: 38, name: "ص", verses: 88 },
-                { number: 39, name: "الزمر", verses: 75 },
-                { number: 40, name: "غافر", verses: 85 },
-                { number: 41, name: "فصلت", verses: 54 },
-                { number: 42, name: "الشورى", verses: 53 },
-                { number: 43, name: "الزخرف", verses: 89 },
-                { number: 44, name: "الدخان", verses: 59 },
-                { number: 45, name: "الجاثية", verses: 37 },
-                { number: 46, name: "الأحقاف", verses: 35 },
-                { number: 47, name: "محمد", verses: 38 },
-                { number: 48, name: "الفتح", verses: 29 },
-                { number: 49, name: "الحجرات", verses: 18 },
-                { number: 50, name: "ق", verses: 45 },
-                { number: 51, name: "الذاريات", verses: 60 },
-                { number: 52, name: "الطور", verses: 49 },
-                { number: 53, name: "النجم", verses: 62 },
-                { number: 54, name: "القمر", verses: 55 },
-                { number: 55, name: "الرحمن", verses: 78 },
-                { number: 56, name: "الواقعة", verses: 96 },
-                { number: 57, name: "الحديد", verses: 29 },
-                { number: 58, name: "المجادلة", verses: 22 },
-                { number: 59, name: "الحشر", verses: 24 },
-                { number: 60, name: "الممتحنة", verses: 13 },
-                { number: 61, name: "الصف", verses: 14 },
-                { number: 62, name: "الجمعة", verses: 11 },
-                { number: 63, name: "المنافقون", verses: 11 },
-                { number: 64, name: "التغابن", verses: 18 },
-                { number: 65, name: "الطلاق", verses: 12 },
-                { number: 66, name: "التحريم", verses: 12 },
-                { number: 67, name: "الملك", verses: 30 },
-                { number: 68, name: "القلم", verses: 52 },
-                { number: 69, name: "الحاقة", verses: 52 },
-                { number: 70, name: "المعارج", verses: 44 },
-                { number: 71, name: "نوح", verses: 28 },
-                { number: 72, name: "الجن", verses: 28 },
-                { number: 73, name: "المزمل", verses: 20 },
-                { number: 74, name: "المدثر", verses: 56 },
-                { number: 75, name: "القيامة", verses: 40 },
-                { number: 76, name: "الانسان", verses: 31 },
-                { number: 77, name: "المرسلات", verses: 50 },
-                { number: 78, name: "النبإ", verses: 40 },
-                { number: 79, name: "النازعات", verses: 46 },
-                { number: 80, name: "عبس", verses: 42 },
-                { number: 81, name: "التكوير", verses: 29 },
-                { number: 82, name: "الإنفطار", verses: 19 },
-                { number: 83, name: "المطففين", verses: 36 },
-                { number: 84, name: "الإنشقاق", verses: 25 },
-                { number: 85, name: "البروج", verses: 22 },
-                { number: 86, name: "الطارق", verses: 17 },
-                { number: 87, name: "الأعلى", verses: 19 },
-                { number: 88, name: "الغاشية", verses: 26 },
-                { number: 89, name: "الفجر", verses: 30 },
-                { number: 90, name: "البلد", verses: 20 },
-                { number: 91, name: "الشمس", verses: 15 },
-                { number: 92, name: "الليل", verses: 21 },
-                { number: 93, name: "الضحى", verses: 11 },
-                { number: 94, name: "الشرح", verses: 8 },
-                { number: 95, name: "التين", verses: 8 },
-                { number: 96, name: "العلق", verses: 19 },
-                { number: 97, name: "القدر", verses: 5 },
-                { number: 98, name: "البينة", verses: 8 },
-                { number: 99, name: "الزلزلة", verses: 8 },
-                { number: 100, name: "العاديات", verses: 11 },
-                { number: 101, name: "القارعة", verses: 11 },
-                { number: 102, name: "التكاثر", verses: 8 },
-                { number: 103, name: "العصر", verses: 3 },
-                { number: 104, name: "الهمزة", verses: 9 },
-                { number: 105, name: "الفيل", verses: 5 },
-                { number: 106, name: "قريش", verses: 4 },
-                { number: 107, name: "الماعون", verses: 7 },
-                { number: 108, name: "الكوثر", verses: 3 },
-                { number: 109, name: "الكافرون", verses: 6 },
-                { number: 110, name: "النصر", verses: 3 },
-                { number: 111, name: "المسد", verses: 5 },
-                { number: 112, name: "الإخلاص", verses: 4 },
-                { number: 113, name: "الفلق", verses: 5 },
-                { number: 114, name: "الناس", verses: 6 }
-            ],
-            bengali: [
-                { number: 1, name: "সূরা আল-ফাতিহা", verses: 7 },
-                { number: 2, name: "সূরা আল-বাকারা", verses: 286 },
-                { number: 3, name: "সূরা আলে ইমরান", verses: 200 },
-                { number: 4, name: "সূরা আন-নিসা", verses: 176 },
-                { number: 5, name: "সূরা আল-মায়িদা", verses: 120 },
-                { number: 6, name: "সূরা আল-আনআম", verses: 165 },
-                { number: 7, name: "সূরা আল-আরাফ", verses: 206 },
-                { number: 8, name: "সূরা আল-আনফাল", verses: 75 },
-                { number: 9, name: "সূরা আত-তাওবাহ", verses: 129 },
-                { number: 10, name: "সূরা ইউনুস", verses: 109 },
-                { number: 11, name: "সূরা হুদ", verses: 123 },
-                { number: 12, name: "সূরা ইউসুফ", verses: 111 },
-                { number: 13, name: "সূরা আর-রাদ", verses: 43 },
-                { number: 14, name: "সূরা ইব্রাহিম", verses: 52 },
-                { number: 15, name: "সূরা আল-হিজর", verses: 99 },
-                { number: 16, name: "সূরা আন-নাহল", verses: 128 },
-                { number: 17, name: "সূরা আল-ইসরা", verses: 111 },
-                { number: 18, name: "সূরা আল-কাহফ", verses: 110 },
-                { number: 19, name: "সূরা মারইয়াম", verses: 98 },
-                { number: 20, name: "সূরা ত্বোয়া-হা", verses: 135 },
-                { number: 21, name: "সূরা আল-আম্বিয়া", verses: 112 },
-                { number: 22, name: "সূরা আল-হাজ্জ", verses: 78 },
-                { number: 23, name: "সূরা আল-মুমিনুন", verses: 118 },
-                { number: 24, name: "সূরা আন-নূর", verses: 64 },
-                { number: 25, name: "সূরা আল-ফুরকান", verses: 77 },
-                { number: 26, name: "সূরা আশ-শু'আরা", verses: 227 },
-                { number: 27, name: "সূরা আন-নামল", verses: 93 },
-                { number: 28, name: "সূরা আল-কাসাস", verses: 88 },
-                { number: 29, name: "সূরা আল-আনকাবুত", verses: 69 },
-                { number: 30, name: "সূরা আর-রুম", verses: 60 },
-                { number: 31, name: "সূরা লুকমান", verses: 34 },
-                { number: 32, name: "সূরা আস-সাজদা", verses: 30 },
-                { number: 33, name: "সূরা আল-আহযাব", verses: 73 },
-                { number: 34, name: "সূরা সাবা", verses: 54 },
-                { number: 35, name: "সূরা ফাতির", verses: 45 },
-                { number: 36, name: "সূরা ইয়াসিন", verses: 83 },
-                { number: 37, name: "সূরা আস-সাফফাত", verses: 182 },
-                { number: 38, name: "সূরা সাদ", verses: 88 },
-                { number: 39, name: "সূরা আয-যুমার", verses: 75 },
-                { number: 40, name: "সূরা গাফির", verses: 85 },
-                { number: 41, name: "সূরা হা-মীম সাজদা", verses: 54 },
-                { number: 42, name: "সূরা আশ-শুরা", verses: 53 },
-                { number: 43, name: "সূরা আয-যুখরুফ", verses: 89 },
-                { number: 44, name: "সূরা আদ-দুখান", verses: 59 },
-                { number: 45, name: "সূরা আল-জাসিয়া", verses: 37 },
-                { number: 46, name: "সূরা আল-আহকাফ", verses: 35 },
-                { number: 47, name: "সূরা মুহাম্মদ", verses: 38 },
-                { number: 48, name: "সূরা আল-ফাতহ", verses: 29 },
-                { number: 49, name: "সূরা আল-হুজুরাত", verses: 18 },
-                { number: 50, name: "সূরা ক্বাফ", verses: 45 },
-                { number: 51, name: "সূরা আয-যারিয়াত", verses: 60 },
-                { number: 52, name: "সূরা আত-তূর", verses: 49 },
-                { number: 53, name: "সূরা আন-নাজম", verses: 62 },
-                { number: 54, name: "সূরা আল-ক্বামার", verses: 55 },
-                { number: 55, name: "সূরা আর-রহমান", verses: 78 },
-                { number: 56, name: "সূরা আল-ওয়াকিআ", verses: 96 },
-                { number: 57, name: "সূরা আল-হাদিদ", verses: 29 },
-                { number: 58, name: "সূরা আল-মুজাদালা", verses: 22 },
-                { number: 59, name: "সূরা আল-হাশর", verses: 24 },
-                { number: 60, name: "সূরা আল-মুমতাহিনা", verses: 13 },
-                { number: 61, name: "সূরা আস-সাফ", verses: 14 },
-                { number: 62, name: "সূরা আল-জুমুআহ", verses: 11 },
-                { number: 63, name: "সূরা আল-মুনাফিকুন", verses: 11 },
-                { number: 64, name: "সূরা আত-তাগাবুন", verses: 18 },
-                { number: 65, name: "সূরা আত-তালাক", verses: 12 },
-                { number: 66, name: "সূরা আত-তাহরিম", verses: 12 },
-                { number: 67, name: "সূরা আল-মুলক", verses: 30 },
-                { number: 68, name: "সূরা আল-ক্বলম", verses: 52 },
-                { number: 69, name: "সূরা আল-হাক্কাহ", verses: 52 },
-                { number: 70, name: "সূরা আল-মাআরিজ", verses: 44 },
-                { number: 71, name: "সূরা নূহ", verses: 28 },
-                { number: 72, name: "সূরা আল-জ্বিন", verses: 28 },
-                { number: 73, name: "সূরা আল-মুজ্জাম্মিল", verses: 20 },
-                { number: 74, name: "সূরা আল-মুদদাসসির", verses: 56 },
-                { number: 75, name: "সূরা আল-কিয়ামাহ", verses: 40 },
-                { number: 76, name: "সূরা আল-ইনসান", verses: 31 },
-                { number: 77, name: "সূরা আল-মুরসালাত", verses: 50 },
-                { number: 78, name: "সূরা আন-নাবা", verses: 40 },
-                { number: 79, name: "সূরা আন-নাজিয়াত", verses: 46 },
-                { number: 80, name: "সূরা আবাসা", verses: 42 },
-                { number: 81, name: "সূরা আত-তাকভীর", verses: 29 },
-                { number: 82, name: "সূরা আল-ইনফিতার", verses: 19 },
-                { number: 83, name: "সূরা আল-মুতাফফিফীন", verses: 36 },
-                { number: 84, name: "সূরা আল-ইনশিকাক", verses: 25 },
-                { number: 85, name: "সূরা আল-বুরুজ", verses: 22 },
-                { number: 86, name: "সূরা আত-তারিক", verses: 17 },
-                { number: 87, name: "সূরা আল-আ'লা", verses: 19 },
-                { number: 88, name: "সূরা আল-গাশিয়াহ", verses: 26 },
-                { number: 89, name: "সূরা আল-ফাজর", verses: 30 },
-                { number: 90, name: "সূরা আল-বালাদ", verses: 20 },
-                { number: 91, name: "সূরা আশ-শামস", verses: 15 },
-                { number: 92, name: "সূরা আল-লাইল", verses: 21 },
-                { number: 93, name: "সূরা আদ-দুহা", verses: 11 },
-                { number: 94, name: "সূরা আশ-শারহ", verses: 8 },
-                { number: 95, name: "সূরা আত-তিন", verses: 8 },
-                { number: 96, name: "সূরা আল-আলাক", verses: 19 },
-                { number: 97, name: "সূরা আল-ক্বদর", verses: 5 },
-                { number: 98, name: "সূরা আল-বাইয়্যিনাহ", verses: 8 },
-                { number: 99, name: "সূরা আয-যালযালাহ", verses: 8 },
-                { number: 100, name: "সূরা আল-আদিয়াত", verses: 11 },
-                { number: 101, name: "সূরা আল-কারিয়াহ", verses: 11 },
-                { number: 102, name: "সূরা আত-তাকাছুর", verses: 8 },
-                { number: 103, name: "সূরা আল-আসর", verses: 3 },
-                { number: 104, name: "সূরা আল-হুমাজাহ", verses: 9 },
-                { number: 105, name: "সূরা আল-ফীল", verses: 5 },
-                { number: 106, name: "সূরা কুরাইশ", verses: 4 },
-                { number: 107, name: "সূরা আল-মাউন", verses: 7 },
-                { number: 108, name: "সূরা আল-কাওসার", verses: 3 },
-                { number: 109, name: "সূরা আল-কাফিরুন", verses: 6 },
-                { number: 110, name: "সূরা আন-নাসর", verses: 3 },
-                { number: 111, name: "সূরা আল-মাসাদ", verses: 5 },
-                { number: 112, name: "সূরা আল-ইখলাস", verses: 4 },
-                { number: 113, name: "সূরা আল-ফালাক", verses: 5 },
-                { number: 114, name: "সূরা আন-নাস", verses: 6 }
-            ],
-            urdu: [
-                { number: 1, name: "سورۃ الفاتحہ", verses: 7 },
-                { number: 2, name: "سورۃ البقرہ", verses: 286 },
-                { number: 3, name: "سورۃ آل عمران", verses: 200 },
-                { number: 4, name: "سورۃ النساء", verses: 176 },
-                { number: 5, name: "سورۃ المائدہ", verses: 120 },
-                { number: 6, name: "سورۃ الانعام", verses: 165 },
-                { number: 7, name: "سورۃ الاعراف", verses: 206 },
-                { number: 8, name: "سورۃ الانفال", verses: 75 },
-                { number: 9, name: "سورۃ التوبہ", verses: 129 },
-                { number: 10, name: "سورۃ یونس", verses: 109 },
-                { number: 11, name: "سورۃ ہود", verses: 123 },
-                { number: 12, name: "سورۃ یوسف", verses: 111 },
-                { number: 13, name: "سورۃ الرعد", verses: 43 },
-                { number: 14, name: "سورۃ ابراہیم", verses: 52 },
-                { number: 15, name: "سورۃ الحجر", verses: 99 },
-                { number: 16, name: "سورۃ النحل", verses: 128 },
-                { number: 17, name: "سورۃ الاسراء", verses: 111 },
-                { number: 18, name: "سورۃ الکہف", verses: 110 },
-                { number: 19, name: "سورۃ مریم", verses: 98 },
-                { number: 20, name: "سورۃ طہ", verses: 135 },
-                { number: 21, name: "سورۃ الانبیاء", verses: 112 },
-                { number: 22, name: "سورۃ الحج", verses: 78 },
-                { number: 23, name: "سورۃ المؤمنون", verses: 118 },
-                { number: 24, name: "سورۃ النور", verses: 64 },
-                { number: 25, name: "سورۃ الفرقان", verses: 77 },
-                { number: 26, name: "سورۃ الشعراء", verses: 227 },
-                { number: 27, name: "سورۃ النمل", verses: 93 },
-                { number: 28, name: "سورۃ القصص", verses: 88 },
-                { number: 29, name: "سورۃ العنکبوت", verses: 69 },
-                { number: 30, name: "سورۃ الروم", verses: 60 },
-                { number: 31, name: "سورۃ لقمان", verses: 34 },
-                { number: 32, name: "سورۃ السجدہ", verses: 30 },
-                { number: 33, name: "سورۃ الاحزاب", verses: 73 },
-                { number: 34, name: "سورۃ سبا", verses: 54 },
-                { number: 35, name: "سورۃ فاطر", verses: 45 },
-                { number: 36, name: "سورۃ یس", verses: 83 },
-                { number: 37, name: "سورۃ الصافات", verses: 182 },
-                { number: 38, name: "سورۃ ص", verses: 88 },
-                { number: 39, name: "سورۃ الزمر", verses: 75 },
-                { number: 40, name: "سورۃ غافر", verses: 85 },
-                { number: 41, name: "سورۃ حم السجدہ", verses: 54 },
-                { number: 42, name: "سورۃ الشوری", verses: 53 },
-                { number: 43, name: "سورۃ الزخرف", verses: 89 },
-                { number: 44, name: "سورۃ الدخان", verses: 59 },
-                { number: 45, name: "سورۃ الجاثیہ", verses: 37 },
-                { number: 46, name: "سورۃ الاحقاف", verses: 35 },
-                { number: 47, name: "سورۃ محمد", verses: 38 },
-                { number: 48, name: "سورۃ الفتح", verses: 29 },
-                { number: 49, name: "سورۃ الحجرات", verses: 18 },
-                { number: 50, name: "سورۃ ق", verses: 45 },
-                { number: 51, name: "سورۃ الذاریات", verses: 60 },
-                { number: 52, name: "سورۃ الطور", verses: 49 },
-                { number: 53, name: "سورۃ النجم", verses: 62 },
-                { number: 54, name: "سورۃ القمر", verses: 55 },
-                { number: 55, name: "سورۃ الرحمٰن", verses: 78 },
-                { number: 56, name: "سورۃ الواقعہ", verses: 96 },
-                { number: 57, name: "سورۃ الحدید", verses: 29 },
-                { number: 58, name: "سورۃ المجادلہ", verses: 22 },
-                { number: 59, name: "سورۃ الحشر", verses: 24 },
-                { number: 60, name: "سورۃ الممتحنہ", verses: 13 },
-                { number: 61, name: "سورۃ الصف", verses: 14 },
-                { number: 62, name: "سورۃ الجمعہ", verses: 11 },
-                { number: 63, name: "سورۃ المنافقون", verses: 11 },
-                { number: 64, name: "سورۃ التغابن", verses: 18 },
-                { number: 65, name: "سورۃ الطلاق", verses: 12 },
-                { number: 66, name: "سورۃ التحریم", verses: 12 },
-                { number: 67, name: "سورۃ الملک", verses: 30 },
-                { number: 68, name: "سورۃ القلم", verses: 52 },
-                { number: 69, name: "سورۃ الحاقہ", verses: 52 },
-                { number: 70, name: "سورۃ المعارج", verses: 44 },
-                { number: 71, name: "سورۃ نوح", verses: 28 },
-                { number: 72, name: "سورۃ الجن", verses: 28 },
-                { number: 73, name: "سورۃ المزمل", verses: 20 },
-                { number: 74, name: "سورۃ المدثر", verses: 56 },
-                { number: 75, name: "سورۃ القیامہ", verses: 40 },
-                { number: 76, name: "سورۃ الانسان", verses: 31 },
-                { number: 77, name: "سورۃ المرسلات", verses: 50 },
-                { number: 78, name: "سورۃ النباء", verses: 40 },
-                { number: 79, name: "سورۃ النازعات", verses: 46 },
-                { number: 80, name: "سورۃ عبس", verses: 42 },
-                { number: 81, name: "سورۃ التکویر", verses: 29 },
-                { number: 82, name: "سورۃ الانفطار", verses: 19 },
-                { number: 83, name: "سورۃ المطففین", verses: 36 },
-                { number: 84, name: "سورۃ الانشقاق", verses: 25 },
-                { number: 85, name: "سورۃ البروج", verses: 22 },
-                { number: 86, name: "سورۃ الطارق", verses: 17 },
-                { number: 87, name: "سورۃ الاعلی", verses: 19 },
-                { number: 88, name: "سورۃ الغاشیہ", verses: 26 },
-                { number: 89, name: "سورۃ الفجر", verses: 30 },
-                { number: 90, name: "سورۃ البلد", verses: 20 },
-                { number: 91, name: "سورۃ الشمس", verses: 15 },
-                { number: 92, name: "سورۃ اللیل", verses: 21 },
-                { number: 93, name: "سورۃ الضحی", verses: 11 },
-                { number: 94, name: "سورۃ الشرح", verses: 8 },
-                { number: 95, name: "سورۃ التین", verses: 8 },
-                { number: 96, name: "سورۃ العلق", verses: 19 },
-                { number: 97, name: "سورۃ القدر", verses: 5 },
-                { number: 98, name: "سورۃ البینہ", verses: 8 },
-                { number: 99, name: "سورۃ الزلزال", verses: 8 },
-                { number: 100, name: "سورۃ العادیات", verses: 11 },
-                { number: 101, name: "سورۃ القارعہ", verses: 11 },
-                { number: 102, name: "سورۃ التکاثر", verses: 8 },
-                { number: 103, name: "سورۃ العصر", verses: 3 },
-                { number: 104, name: "سورۃ الہمزہ", verses: 9 },
-                { number: 105, name: "سورۃ الفیل", verses: 5 },
-                { number: 106, name: "سورۃ قریش", verses: 4 },
-                { number: 107, name: "سورۃ الماعون", verses: 7 },
-                { number: 108, name: "سورۃ الکوثر", verses: 3 },
-                { number: 109, name: "سورۃ الکافرون", verses: 6 },
-                { number: 110, name: "سورۃ النصر", verses: 3 },
-                { number: 111, name: "سورۃ المسد", verses: 5 },
-                { number: 112, name: "سورۃ الاخلاص", verses: 4 },
-                { number: 113, name: "سورۃ الفلق", verses: 5 },
-                { number: 114, name: "سورۃ الناس", verses: 6 }
-            ]
-        };
-
-        // Original surahs data (for search functionality)
-        var surahs = surahNames.english;
+        var surahs = [
+            { number: 1, arabic: "الفاتحة", english: "Al-Fatihah", verses: 7 },
+            { number: 2, arabic: "البقرة", english: "Al-Baqarah", verses: 286 },
+            { number: 3, arabic: "آل عمران", english: "Aali Imran", verses: 200 },
+            { number: 4, arabic: "النساء", english: "An-Nisa", verses: 176 },
+            { number: 5, arabic: "المائدة", english: "Al-Ma'idah", verses: 120 },
+            { number: 6, arabic: "الأنعام", english: "Al-An'am", verses: 165 },
+            { number: 7, arabic: "الأعراف", english: "Al-A'raf", verses: 206 },
+            { number: 8, arabic: "الأنفال", english: "Al-Anfal", verses: 75 },
+            { number: 9, arabic: "التوبة", english: "At-Tawbah", verses: 129 },
+            { number: 10, arabic: "يونس", english: "Yunus", verses: 109 },
+            { number: 11, arabic: "هود", english: "Hud", verses: 123 },
+            { number: 12, arabic: "يوسف", english: "Yusuf", verses: 111 },
+            { number: 13, arabic: "الرعد", english: "Ar-Ra'd", verses: 43 },
+            { number: 14, arabic: "ابراهيم", english: "Ibrahim", verses: 52 },
+            { number: 15, arabic: "الحجر", english: "Al-Hijr", verses: 99 },
+            { number: 16, arabic: "النحل", english: "An-Nahl", verses: 128 },
+            { number: 17, arabic: "الإسراء", english: "Al-Isra", verses: 111 },
+            { number: 18, arabic: "الكهف", english: "Al-Kahf", verses: 110 },
+            { number: 19, arabic: "مريم", english: "Maryam", verses: 98 },
+            { number: 20, arabic: "طه", english: "Ta-Ha", verses: 135 },
+            { number: 21, arabic: "الأنبياء", english: "Al-Anbiya", verses: 112 },
+            { number: 22, arabic: "الحج", english: "Al-Hajj", verses: 78 },
+            { number: 23, arabic: "المؤمنون", english: "Al-Mu'minun", verses: 118 },
+            { number: 24, arabic: "النور", english: "An-Nur", verses: 64 },
+            { number: 25, arabic: "الفرقان", english: "Al-Furqan", verses: 77 },
+            { number: 26, arabic: "الشعراء", english: "Ash-Shu'ara", verses: 227 },
+            { number: 27, arabic: "النمل", english: "An-Naml", verses: 93 },
+            { number: 28, arabic: "القصص", english: "Al-Qasas", verses: 88 },
+            { number: 29, arabic: "العنكبوت", english: "Al-Ankabut", verses: 69 },
+            { number: 30, arabic: "الروم", english: "Ar-Rum", verses: 60 },
+            { number: 31, arabic: "لقمان", english: "Luqman", verses: 34 },
+            { number: 32, arabic: "السجدة", english: "As-Sajdah", verses: 30 },
+            { number: 33, arabic: "الأحزاب", english: "Al-Ahzab", verses: 73 },
+            { number: 34, arabic: "سبإ", english: "Saba", verses: 54 },
+            { number: 35, arabic: "فاطر", english: "Fatir", verses: 45 },
+            { number: 36, arabic: "يس", english: "Ya-Sin", verses: 83 },
+            { number: 37, arabic: "الصافات", english: "As-Saffat", verses: 182 },
+            { number: 38, arabic: "ص", english: "Sad", verses: 88 },
+            { number: 39, arabic: "الزمر", english: "Az-Zumar", verses: 75 },
+            { number: 40, arabic: "غافر", english: "Ghafir", verses: 85 },
+            { number: 41, arabic: "فصلت", english: "Fussilat", verses: 54 },
+            { number: 42, arabic: "الشورى", english: "Ash-Shura", verses: 53 },
+            { number: 43, arabic: "الزخرف", english: "Az-Zukhruf", verses: 89 },
+            { number: 44, arabic: "الدخان", english: "Ad-Dukhan", verses: 59 },
+            { number: 45, arabic: "الجاثية", english: "Al-Jathiyah", verses: 37 },
+            { number: 46, arabic: "الأحقاف", english: "Al-Ahqaf", verses: 35 },
+            { number: 47, arabic: "محمد", english: "Muhammad", verses: 38 },
+            { number: 48, arabic: "الفتح", english: "Al-Fath", verses: 29 },
+            { number: 49, arabic: "الحجرات", english: "Al-Hujurat", verses: 18 },
+            { number: 50, arabic: "ق", english: "Qaf", verses: 45 },
+            { number: 51, arabic: "الذاريات", english: "Adh-Dhariyat", verses: 60 },
+            { number: 52, arabic: "الطور", english: "At-Tur", verses: 49 },
+            { number: 53, arabic: "النجم", english: "An-Najm", verses: 62 },
+            { number: 54, arabic: "القمر", english: "Al-Qamar", verses: 55 },
+            { number: 55, arabic: "الرحمن", english: "Ar-Rahman", verses: 78 },
+            { number: 56, arabic: "الواقعة", english: "Al-Waqi'ah", verses: 96 },
+            { number: 57, arabic: "الحديد", english: "Al-Hadid", verses: 29 },
+            { number: 58, arabic: "المجادلة", english: "Al-Mujadila", verses: 22 },
+            { number: 59, arabic: "الحشر", english: "Al-Hashr", verses: 24 },
+            { number: 60, arabic: "الممتحنة", english: "Al-Mumtahanah", verses: 13 },
+            { number: 61, arabic: "الصف", english: "As-Saf", verses: 14 },
+            { number: 62, arabic: "الجمعة", english: "Al-Jumu'ah", verses: 11 },
+            { number: 63, arabic: "المنافقون", english: "Al-Munafiqun", verses: 11 },
+            { number: 64, arabic: "التغابن", english: "At-Taghabun", verses: 18 },
+            { number: 65, arabic: "الطلاق", english: "At-Talaq", verses: 12 },
+            { number: 66, arabic: "التحريم", english: "At-Tahrim", verses: 12 },
+            { number: 67, arabic: "الملك", english: "Al-Mulk", verses: 30 },
+            { number: 68, arabic: "القلم", english: "Al-Qalam", verses: 52 },
+            { number: 69, arabic: "الحاقة", english: "Al-Haqqah", verses: 52 },
+            { number: 70, arabic: "المعارج", english: "Al-Ma'arij", verses: 44 },
+            { number: 71, arabic: "نوح", english: "Nuh", verses: 28 },
+            { number: 72, arabic: "الجن", english: "Al-Jinn", verses: 28 },
+            { number: 73, arabic: "المزمل", english: "Al-Muzzammil", verses: 20 },
+            { number: 74, arabic: "المدثر", english: "Al-Muddaththir", verses: 56 },
+            { number: 75, arabic: "القيامة", english: "Al-Qiyamah", verses: 40 },
+            { number: 76, arabic: "الانسان", english: "Al-Insan", verses: 31 },
+            { number: 77, arabic: "المرسلات", english: "Al-Mursalat", verses: 50 },
+            { number: 78, arabic: "النبإ", english: "An-Naba", verses: 40 },
+            { number: 79, arabic: "النازعات", english: "An-Nazi'at", verses: 46 },
+            { number: 80, arabic: "عبس", english: "Abasa", verses: 42 },
+            { number: 81, arabic: "التكوير", english: "At-Takwir", verses: 29 },
+            { number: 82, arabic: "الإنفطار", english: "Al-Infitar", verses: 19 },
+            { number: 83, arabic: "المطففين", english: "Al-Mutaffifin", verses: 36 },
+            { number: 84, arabic: "الإنشقاق", english: "Al-Inshiqaq", verses: 25 },
+            { number: 85, arabic: "البروج", english: "Al-Buruj", verses: 22 },
+            { number: 86, arabic: "الطارق", english: "At-Tariq", verses: 17 },
+            { number: 87, arabic: "الأعلى", english: "Al-A'la", verses: 19 },
+            { number: 88, arabic: "الغاشية", english: "Al-Ghashiyah", verses: 26 },
+            { number: 89, arabic: "الفجر", english: "Al-Fajr", verses: 30 },
+            { number: 90, arabic: "البلد", english: "Al-Balad", verses: 20 },
+            { number: 91, arabic: "الشمس", english: "Ash-Shams", verses: 15 },
+            { number: 92, arabic: "الليل", english: "Al-Layl", verses: 21 },
+            { number: 93, arabic: "الضحى", english: "Ad-Duha", verses: 11 },
+            { number: 94, arabic: "الشرح", english: "Ash-Sharh", verses: 8 },
+            { number: 95, arabic: "التين", english: "At-Tin", verses: 8 },
+            { number: 96, arabic: "العلق", english: "Al-Alaq", verses: 19 },
+            { number: 97, arabic: "القدر", english: "Al-Qadr", verses: 5 },
+            { number: 98, arabic: "البينة", english: "Al-Bayyinah", verses: 8 },
+            { number: 99, arabic: "الزلزلة", english: "Az-Zalzalah", verses: 8 },
+            { number: 100, arabic: "العاديات", english: "Al-Adiyat", verses: 11 },
+            { number: 101, arabic: "القارعة", english: "Al-Qari'ah", verses: 11 },
+            { number: 102, arabic: "التكاثر", english: "At-Takathur", verses: 8 },
+            { number: 103, arabic: "العصر", english: "Al-Asr", verses: 3 },
+            { number: 104, arabic: "الهمزة", english: "Al-Humazah", verses: 9 },
+            { number: 105, arabic: "الفيل", english: "Al-Fil", verses: 5 },
+            { number: 106, arabic: "قريش", english: "Quraysh", verses: 4 },
+            { number: 107, arabic: "الماعون", english: "Al-Ma'un", verses: 7 },
+            { number: 108, arabic: "الكوثر", english: "Al-Kawthar", verses: 3 },
+            { number: 109, arabic: "الكافرون", english: "Al-Kafirun", verses: 6 },
+            { number: 110, arabic: "النصر", english: "An-Nasr", verses: 3 },
+            { number: 111, arabic: "المسد", english: "Al-Masad", verses: 5 },
+            { number: 112, arabic: "الإخلاص", english: "Al-Ikhlas", verses: 4 },
+            { number: 113, arabic: "الفلق", english: "Al-Falaq", verses: 5 },
+            { number: 114, arabic: "الناس", english: "An-Nas", verses: 6 }
+        ];
 
         var qaris = {
+            // Saudi Arabia 🇸🇦 - All Qaris
             'abdul_mohsen_al_harthy': { name: 'Abdul Mohsen Al Harthy', server: 'server6', folder: 'mohsin_harthi', country: 'saudi' },
-            // ... আপনার অন্যান্য qari ডেটা ...
+            'abdul_mohsen_al_qasim': { name: 'Abdul Mohsen Al-Qasim', server: 'server8', folder: 'qasm', country: 'saudi' },
+            'abdul_rahman_al_majid': { name: 'Abdul Rahman Al Majid', server: 'server10', folder: 'a_majed', country: 'saudi' },
+            'abdul_rahman_al_awsi': { name: 'Abdul Rahman Al-Awsi', server: 'server6', folder: 'aloosi', country: 'saudi' },
+            'abdul_rahman_al_juraidhi': { name: 'Abdul Rahman Al-Juraidhi', server: 'https://ia803202.us.archive.org/10/items/aljrrayddi', folder: '', country: 'saudi' },
+            'abdul_rahman_al_sudais': { name: 'Abdul Rahman Al-Sudais', server: 'server11', folder: 'sds', country: 'saudi' },
+            'abdulaziz_al_ahmad': { name: 'AbdulAziz Al-Ahmad', server: 'server11', folder: 'a_ahmed', country: 'saudi' },
+            'abdulaziz_al_zahrani': { name: 'Abdulaziz Al-Zahrani', server: 'server9', folder: 'zahrani', country: 'saudi' },
+            'abdulbari_thubaiti': { name: 'AbdulBari Thubaiti', server: 'server6', folder: 'thubti', country: 'saudi' },
+            'abdullah_al_juhani': { name: 'Abdullah Al-Juhani', server: 'https://ia903409.us.archive.org/26/items/s20sssssssssssssssssssssssss210418', folder: '', country: 'saudi' },
+            'abdullah_al_khalaf': { name: 'Abdullah Al-Khalaf', server: 'https://ia800400.us.archive.org/27/items/alfirdwsiy1433_gmail_002_2679777666666666666666666666666666696794696901706/001', folder: '', country: 'saudi' },
+            'abdullah_al_khulaifi': { name: 'Abdullah Al-Khulaifi', server: 'server11', folder: 'khulaifi', country: 'saudi' },
+            'abdullah_al_matrod': { name: 'Abdullah Al-Matrod', server: 'server11', folder: 'matrod', country: 'saudi' },
+            'abdullah_al_mousa': { name: 'Abdullah Al-Mousa', server: 'server11', folder: 'mousa', country: 'saudi' },
+            'abdullah_basfar': { name: 'Abdullah Basfar', server: 'server11', folder: 'basfar', country: 'saudi' },
+            'abdullah_khayat': { name: 'Abdullah Khayat', server: 'server11', folder: 'khayat', country: 'saudi' },
+            'abdulwadud_hanif': { name: 'AbdulWadud Hanif', server: 'server11', folder: 'hanif', country: 'saudi' },
+            'abu_bakr_al_shatry': { name: 'Abu Bakr Al-Shatry', server: 'server11', folder: 'shatry', country: 'saudi' },
+            'adel_al_kalbani': { name: 'Adel Al Kalbani', server: 'server11', folder: 'kalbani', country: 'saudi' },
+            'adel_ryan': { name: 'Adel Ryan', server: 'server11', folder: 'ryan', country: 'saudi' },
+            'ahmed_al_ajmi': { name: 'Ahmed Al-Ajmi', server: 'server11', folder: 'ajmi', country: 'saudi' },
+            'ahmed_diban': { name: 'Ahmed Diban', server: 'server11', folder: 'diban', country: 'saudi' },
+            'ali_al_hudhaifi_qalon': { name: 'Ali Al-Hudhaifi Qalon', server: 'server11', folder: 'hudhaifi', country: 'saudi' },
+            'ali_alhuthaifi': { name: 'Ali Alhuthaifi', server: 'server11', folder: 'alhuthaifi', country: 'saudi' },
+            'ali_jaber': { name: 'Ali Jaber', server: 'server11', folder: 'jaber', country: 'saudi' },
+            'anas_almiman': { name: 'Anas Almiman', server: 'server11', folder: 'almiman', country: 'saudi' },
+            'badr_alturki': { name: 'Badr Al-Turki', server: 'server11', folder: 'alturki', country: 'saudi' },
+            'bandar_balila': { name: 'Bandar Balila', server: 'server11', folder: 'balila', country: 'saudi' },
+            'hani_al_rifai': { name: 'Hani Al-Rifai', server: 'server11', folder: 'rifai', country: 'saudi' },
+            'ibrahim_al_akhdar': { name: 'Ibrahim Al-Akhdar', server: 'server11', folder: 'akhdar', country: 'saudi' },
+            'ibrahim_asiri': { name: 'Ibrahim Asiri', server: 'server11', folder: 'asiri', country: 'saudi' },
+            'idris_abkar': { name: 'Idris Abkar', server: 'server11', folder: 'abkar', country: 'saudi' },
+            'imad_al_mansri': { name: 'Imad Al-Mansri', server: 'server11', folder: 'mansri', country: 'saudi' },
+            'khaled_abdel_kafi': { name: 'Khaled Abdel Kafi', server: 'server11', folder: 'kafi', country: 'saudi' },
+            'khaled_al_jalil': { name: 'Khaled Al Jalil', server: 'server11', folder: 'jalil', country: 'saudi' },
+            'khaled_al_muhanna': { name: 'Khaled Al-Muhanna', server: 'server11', folder: 'muhanna', country: 'saudi' },
+            'khaled_al_qahtani': { name: 'Khaled Al-Qahtani', server: 'server11', folder: 'qahtani', country: 'saudi' },
+            'maher_al_muaiqly': { name: 'Maher Al-Muaiqly', server: 'server12', folder: 'maher', country: 'saudi' },
+            'majid_alzamil': { name: 'Majid Alzamil', server: 'server11', folder: 'alzamil', country: 'saudi' },
+            'mansour_al_salimi': { name: 'Mansour Al Salimi', server: 'server11', folder: 'salimi', country: 'saudi' },
+            'mohammad_ayyub': { name: 'Mohammad Ayyub', server: 'server8', folder: 'ayyub', country: 'saudi' },
+            'mohammed_al_ghazali': { name: 'Mohammed Al-Ghazali', server: 'server11', folder: 'ghazali', country: 'saudi' },
+            'muhammad_al_bakhit': { name: 'Muhammad Al-Bakhit', server: 'server11', folder: 'bakhit', country: 'saudi' },
+            'muhammad_al_luhaidan': { name: 'Muhammad Al-Luhaidan', server: 'server11', folder: 'luhaidan', country: 'saudi' },
+            'muhammad_al_sabil': { name: 'Muhammad Al-Sabil', server: 'server11', folder: 'sabil', country: 'saudi' },
+            'muhammed_al_muhaisni': { name: 'Muhammed Al Muhaisni', server: 'server11', folder: 'muhaisni', country: 'saudi' },
+            'nabil_al_rifai': { name: 'Nabil Al-Rifai', server: 'server11', folder: 'nabil_rifai', country: 'saudi' },
+            'nasser_al_qatami': { name: 'Nasser Al Qatami', server: 'server11', folder: 'qatami', country: 'saudi' },
+            'rayan_al_muhaisni': { name: 'Rayan Al-Muhaisni', server: 'server11', folder: 'rayan_muhaisni', country: 'saudi' },
+            'saad_al_ghamdi': { name: 'Saad Al-Ghamdi', server: 'server7', folder: 's_gmd', country: 'saudi' },
+            'saeed_al_khatib': { name: 'Saeed Al-Khatib', server: 'server11', folder: 'khatib', country: 'saudi' },
+            'sahl_yassin': { name: 'Sahl Yassin', server: 'server11', folder: 'yassin', country: 'saudi' },
+            'salah_albudair': { name: 'Salah Albudair', server: 'server11', folder: 'albudair', country: 'saudi' },
+            'salah_baothman': { name: 'Salah Baothman', server: 'server11', folder: 'baothman', country: 'saudi' },
+            'saleh_al_sahood': { name: 'Saleh Al-Sahood', server: 'server11', folder: 'sahood', country: 'saudi' },
+            'saud_al_shuraim': { name: 'Saud Al-Shuraim', server: 'server11', folder: 'shuraim', country: 'saudi' },
+            'tamim_al_rimi': { name: 'Tamim Al-Rimi', server: 'server11', folder: 'rimi', country: 'saudi' },
+            'yasser_al_dosari': { name: 'Yasser Al-Dosari', server: 'server14', folder: 'yasir_ad-dusuqy', country: 'saudi' },
+            'yasser_salama': { name: 'Yasser Salama', server: 'server11', folder: 'salama', country: 'saudi' },
+            'youssef_ashewaie': { name: 'Youssef Ashewaie', server: 'server11', folder: 'ashewaie', country: 'saudi' },
+            'yusuf_nooh': { name: 'Yusuf Nooh', server: 'server11', folder: 'nooh', country: 'saudi' },
+            'zaki_daghestani': { name: 'Zaki Daghestani', server: 'server11', folder: 'daghestani', country: 'saudi' },
+            
+            // Egypt 🇪🇬
+            'abdul_basit': { name: 'Abdul Basit', server: 'server7', folder: 'basit', country: 'egypt' },
+            'al_hussary': { name: 'Al-Hussary', server: 'server13', folder: 'husr', country: 'egypt' },
+            'muhammad_siddiq_alminshawi': { name: 'Muhammad Siddiq Al-Minshawi', server: 'server7', folder: 'minshawi', country: 'egypt' },
+            
+            // UAE 🇦🇪
+            'mishary_alafasy': { name: 'Mishary Alafasy', server: 'server8', folder: 'afs', country: 'uae' },
+            
+            // Yemen 🇾🇪
+            'fares_abbad': { name: 'Fares Abbad', server: 'server8', folder: 'frs_a', country: 'yemen' },
+            
+            // Other countries (remaining from previous list)
+            'ahmed_alajmy': { name: 'Ahmed Al-Ajmy', server: 'server10', folder: 'ajm', country: 'uae' },
+            'khalifa_altunaiji': { name: 'Khalifa Al Tunaiji', server: 'server8', folder: 'tunaiji', country: 'uae' },
+            'fahad_almutairi': { name: 'Fahad Almutairi', server: 'server8', folder: 'fahad', country: 'kuwait' },
+            'hamza_elfar': { name: 'Hamza El Far', server: 'server8', folder: 'hamza', country: 'jordan' },
+            'yassin_aljazaery': { name: 'Yassin Al-Jazaery', server: 'server8', folder: 'yassin', country: 'algeria' },
+            'abdelrahman_benmoussa': { name: 'Abdel Rahman Benmoussa', server: 'server8', folder: 'benmoussa', country: 'morocco' },
+            'abdualhaleem_hussain': { name: 'Abdualhaleem Hussain', server: 'server8', folder: 'haleem', country: 'sudan' },
+            'amer_alkazemi': { name: 'Amer Al-Kazemi', server: 'server8', folder: 'kazemi', country: 'iraq' },
+            'yahya_hawwa': { name: 'Yahya Hawwa', server: 'server8', folder: 'hawwa', country: 'syria' },
+            'muhammad_alhudayri': { name: 'Muhammad Al-Hudayri', server: 'server8', folder: 'hudayri', country: 'libya' },
+            'abdul_rashid_sufi': { name: 'Abdul Rashid Sufi', server: 'server8', folder: 'sufi', country: 'somalia' },
+            'fatih_cholak': { name: 'Fatih Cholak', server: 'server8', folder: 'cholak', country: 'turkey' },
+            'anas_alemadi': { name: 'Anas Alemadi', server: 'server8', folder: 'alemadi', country: 'bahrain' },
+            'ahmet_khader_trabelsi': { name: 'Ahmet Khader Trabelsi', server: 'server8', folder: 'trabelsi', country: 'lebanon' },
+            'karim_mansouri': { name: 'Karim Mansouri', server: 'server8', folder: 'mansouri', country: 'iran' },
+            'maher_alwan': { name: 'Maher Alwan', server: 'server8', folder: 'alwan', country: 'qatar' },
+            'sadaqat_ali': { name: 'Sadaqat Ali', server: 'server8', folder: 'sadaqat', country: 'pakistan' },
+            'muhammad_rashad_alsharif': { name: 'Muhammad Rashad Al-Sharif', server: 'server8', folder: 'rashad', country: 'palestine' },
+            'hadi_toure': { name: 'Hadi Toure', server: 'server8', folder: 'toure', country: 'senegal' }
         };
 
         var currentSurah = null;
         var isPlaying = false;
         var currentQari = 'abdul_mohsen_al_harthy';
-        var currentLanguage = 'english'; // Default language
-        
         var audio = document.getElementById('audioPlayer');
         var player = document.getElementById('player');
         var playBtn = document.getElementById('playBtn');
@@ -980,27 +711,195 @@
         var nextBtn = document.getElementById('nextBtn');
         var qariSelect = document.getElementById('qariSelect');
         var countrySelect = document.getElementById('countrySelect');
-        var languageSelect = document.getElementById('languageSelect');
         var scrollToTopBtn = document.getElementById('scrollToTop');
 
-        // Language change event
-        languageSelect.addEventListener('change', function() {
-            currentLanguage = languageSelect.value;
-            renderSurahs(surahs);
+        function filterQarisByCountry(country) {
+            var qariSelectEl = document.getElementById('qariSelect');
+            qariSelectEl.innerHTML = '';
+            
+            var defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'Select Qari';
+            qariSelectEl.appendChild(defaultOption);
+            
+            for (var key in qaris) {
+                var qari = qaris[key];
+                if (country === '' || qari.country === country) {
+                    var option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = qari.name;
+                    qariSelectEl.appendChild(option);
+                }
+            }
+            
+            // Set default selection for Saudi Arabia (first Qari)
+            if (country === 'saudi') {
+                qariSelectEl.value = 'abdul_mohsen_al_harthy';
+                currentQari = 'abdul_mohsen_al_harthy';
+            } else if (qariSelectEl.options.length > 1) {
+                qariSelectEl.value = qariSelectEl.options[1].value;
+                currentQari = qariSelectEl.value;
+            }
+            
             if (currentSurah) {
+                audio.src = getAudioUrl(currentSurah.number);
                 updatePlayerUI(currentSurah);
+            }
+        }
+
+        countrySelect.addEventListener('change', function() {
+            filterQarisByCountry(countrySelect.value);
+        });
+
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
             }
         });
 
-        // Update renderSurahs function
+        scrollToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        function getAudioUrl(surahNumber) {
+            var paddedNumber = String(surahNumber).padStart(3, '0');
+            var qari = qaris[currentQari];
+            
+            if (!qari) return '';
+            
+            // Check if it's a direct URL (starts with http)
+            if (qari.server.startsWith('http')) {
+                // Direct URL format (like archive.org)
+                if (qari.folder) {
+                    return qari.server + '/' + qari.folder + '/' + paddedNumber + '.mp3';
+                } else {
+                    return qari.server + '/' + paddedNumber + '.mp3';
+                }
+            } else {
+                // Standard server format (like server8.mp3quran.net)
+                return 'https://' + qari.server + '.mp3quran.net/' + qari.folder + '/' + paddedNumber + '.mp3';
+            }
+        }
+
+        function formatTime(seconds) {
+            if (!seconds || isNaN(seconds)) return '0:00';
+            var mins = Math.floor(seconds / 60);
+            var secs = Math.floor(seconds % 60);
+            return mins + ':' + (secs < 10 ? '0' : '') + secs;
+        }
+
+        function updatePlayerUI(surah) {
+            document.getElementById('currentSurahArabic').textContent = surah.arabic;
+            document.getElementById('currentSurahEnglish').textContent = surah.english;
+            document.getElementById('currentSurahDetails').textContent = 'Surah ' + surah.number + ' - ' + surah.verses + ' Verses';
+            document.getElementById('currentQari').textContent = 'Qari: ' + qaris[currentQari].name;
+            player.classList.add('active');
+        }
+
+        function playSurah(surah) {
+            if (!currentQari || currentQari === '') {
+                alert('Please select a Qari first');
+                return;
+            }
+            
+            if (currentSurah && currentSurah.number === surah.number && isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                updatePlayButton();
+            } else {
+                if (!currentSurah || currentSurah.number !== surah.number) {
+                    currentSurah = surah;
+                    audio.src = getAudioUrl(surah.number);
+                    updatePlayerUI(surah);
+                }
+                audio.play();
+                isPlaying = true;
+                updatePlayButton();
+            }
+            updateActiveItem();
+        }
+
+        function togglePlay() {
+            if (currentSurah) {
+                playSurah(currentSurah);
+            }
+        }
+
+        function playNext() {
+            if (currentSurah && currentSurah.number < 114) {
+                var nextSurah = surahs[currentSurah.number];
+                currentSurah = nextSurah;
+                audio.src = getAudioUrl(nextSurah.number);
+                audio.play();
+                isPlaying = true;
+                updatePlayerUI(nextSurah);
+                updatePlayButton();
+                updateActiveItem();
+            }
+        }
+
+        function playPrevious() {
+            if (currentSurah && currentSurah.number > 1) {
+                var prevSurah = surahs[currentSurah.number - 2];
+                currentSurah = prevSurah;
+                audio.src = getAudioUrl(prevSurah.number);
+                audio.play();
+                isPlaying = true;
+                updatePlayerUI(prevSurah);
+                updatePlayButton();
+                updateActiveItem();
+            }
+        }
+
+        function updatePlayButton() {
+            if (isPlaying) {
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            } else {
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+            }
+        }
+
+        function updateActiveItem() {
+            var items = document.querySelectorAll('.surah-item');
+            for (var i = 0; i < items.length; i++) {
+                items[i].classList.remove('active');
+            }
+            if (currentSurah) {
+                var activeItem = document.querySelector('[data-surah="' + currentSurah.number + '"]');
+                if (activeItem) {
+                    activeItem.classList.add('active');
+                }
+            }
+        }
+
+        function downloadSurah(surah) {
+            if (!currentQari || currentQari === '') {
+                alert('Please select a Qari first');
+                return;
+            }
+            
+            var url = getAudioUrl(surah.number);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = surah.number + '-' + surah.english + '-' + qaris[currentQari].name + '.mp3';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
         function renderSurahs(filteredSurahs) {
             var surahList = document.getElementById('surahList');
             surahList.innerHTML = '';
 
             for (var i = 0; i < filteredSurahs.length; i++) {
                 var surah = filteredSurahs[i];
-                var surahName = surahNames[currentLanguage][surah.number - 1];
-                
                 var item = document.createElement('div');
                 item.className = 'surah-item';
                 item.setAttribute('data-surah', surah.number);
@@ -1009,8 +908,8 @@
                 item.innerHTML = '<div class="surah-info">' +
                     '<div class="surah-number">' + surah.number + '</div>' +
                     '<div class="surah-names">' +
-                    '<h3>' + surahName.name + '</h3>' +
-                    '<p>Surah ' + surah.number + ' - ' + surah.verses + ' Verses</p>' +
+                    '<h3>' + surah.arabic + '</h3>' +
+                    '<p>' + surah.english + ' - ' + surah.verses + ' Verses</p>' +
                     '</div>' +
                     '</div>' +
                     '<div class="surah-actions">' +
@@ -1026,31 +925,90 @@
             }
         }
 
-        // Update player UI function
-        function updatePlayerUI(surah) {
-            var surahName = surahNames[currentLanguage][surah.number - 1];
+        qariSelect.addEventListener('change', function() {
+            currentQari = qariSelect.value;
+            if (currentSurah) {
+                audio.src = getAudioUrl(currentSurah.number);
+                if (isPlaying) {
+                    audio.play();
+                }
+                updatePlayerUI(currentSurah);
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            var target = e.target;
+            while (target && !target.hasAttribute('data-action')) {
+                target = target.parentElement;
+            }
             
-            document.getElementById('currentSurahArabic').textContent = surahName.name;
-            document.getElementById('currentSurahEnglish').textContent = 'Surah ' + surah.number;
-            document.getElementById('currentSurahDetails').textContent = surah.verses + ' Verses';
-            document.getElementById('currentQari').textContent = 'Qari: ' + qaris[currentQari].name;
-            player.classList.add('active');
-        }
+            if (target) {
+                var action = target.getAttribute('data-action');
+                var surahNum = parseInt(target.getAttribute('data-surah-num'));
+                var surah = surahs[surahNum - 1];
+                
+                if (action === 'play') {
+                    playSurah(surah);
+                } else if (action === 'download') {
+                    downloadSurah(surah);
+                }
+            }
+        });
 
-        // Rest of your JavaScript code remains the same...
-        // Only these three functions were modified:
-        // 1. renderSurahs()
-        // 2. updatePlayerUI()
-        // 3. Added languageSelect event listener
+        playBtn.addEventListener('click', togglePlay);
+        prevBtn.addEventListener('click', playPrevious);
+        nextBtn.addEventListener('click', playNext);
 
-        // Your existing JavaScript functions continue from here...
-        // ... (filterQarisByCountry, getAudioUrl, formatTime, playSurah, etc.)
+        audio.addEventListener('timeupdate', function() {
+            if (audio.duration) {
+                var progress = (audio.currentTime / audio.duration) * 100;
+                progressBar.style.width = progress + '%';
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+                durationEl.textContent = formatTime(audio.duration);
+            }
+        });
+
+        audio.addEventListener('ended', function() {
+            isPlaying = false;
+            updatePlayButton();
+            playNext();
+        });
+
+        audio.addEventListener('loadedmetadata', function() {
+            durationEl.textContent = formatTime(audio.duration);
+        });
+
+        progressContainer.addEventListener('click', function(e) {
+            var rect = progressContainer.getBoundingClientRect();
+            var percent = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = percent * audio.duration;
+        });
+
+        searchInput.addEventListener('input', function(e) {
+            var term = e.target.value.toLowerCase();
+            var filtered = surahs.filter(function(surah) {
+                return surah.arabic.includes(term) ||
+                    surah.english.toLowerCase().includes(term) ||
+                    surah.number.toString().includes(term);
+            });
+            renderSurahs(filtered);
+        });
 
         // Initialize
         filterQarisByCountry('');
         renderSurahs(surahs);
 
-        // Rest of your initialization code...
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registered');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
     </script>
 </body>
-</html>
+                        </html>
